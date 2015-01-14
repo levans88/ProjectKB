@@ -1,0 +1,282 @@
+li
+{
+    list-style-type: none;
+}
+
+
+body
+{
+    /* color: blue; */
+    /* margin-top: auto; */
+    /* margin-bottom: auto; */
+    font-family: sans-serif;
+    background-image: linear-gradient(to bottom, #315481, #918e82 100%);
+    background-attachment: fixed;
+}
+
+.container
+{
+    /* center contents */
+    /*margin-left: auto;
+    margin-right: auto;
+    text-align: center;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin: 0 auto;
+    background: white;
+    width: 80%;
+}
+
+
+header
+{
+    background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
+    padding: 1px 15px 1px 15px;
+}
+
+
+#pastebox
+{
+    width: 100%;
+    max-width: 100%;
+}
+
+
+#tag-table
+{
+    /*width: 100%;*/
+    font-size: 12px;
+    /*font-style: italic;*/
+    /*max-height: 100px;*/
+    max-width: 100%;
+    /*padding: 10px;*/
+    /*border-right: lightgray solid 1px;
+    border-left: lightgray solid 1px;*/
+}
+
+
+.tag-column
+{
+    vertical-align: top;
+    /*border: 1px solid gray;*/
+    padding: 10px;
+    background: transparent;
+    /*border-left: #eee solid 1px;*/
+}
+
+
+#tag-list
+{
+    -webkit-column-width: 100px;
+    -moz-column-width: 100px;
+    column-width: 100px;
+    padding-left: 15px;
+}
+
+
+.tag-checkbox
+{
+    /*visibility: hidden;*/
+    display: none;
+}
+
+
+.selected
+{
+    font-weight: bold;
+    color: red;
+}
+
+
+.notselected
+{
+    font-style: italic;
+}
+
+
+#post-container
+{
+    padding: 1px 15px 20px 15px;
+}
+
+
+#post-table
+{
+    background-color: white;
+    border-collapse: collapse;
+    width: 100%;
+    /*padding: 10px;*/
+}
+
+
+.post-column-posts
+{
+    /*font-size: 16px;
+    vertical-align: top;*/
+    /*border-top: #eee solid 1px;*/
+    border-bottom: #eee solid 1px;
+    padding: 10px;
+    width: 85%
+}
+
+
+.post-date-time
+{
+    font-size: 12px;
+    font-style: italic;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+
+.post-content
+{
+    font-size: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+.post-tags
+{
+    font-size: 12px;
+    font-style: italic;
+    /*vertical-align: top;*/
+    /*border-bottom: #eee solid 1px;*/
+    /*padding: 10px;*/
+    text-align: left;
+    /*padding: 5px;*/
+    /*padding-bottom: 5px;*/
+    padding-top: 5px;
+    /*width: 90%;*/
+    height: 10px;
+    float: left;
+
+}
+
+
+
+
+
+.tag-bottom
+{
+    display: inline-block;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    /*top, right, bottom, left*/
+    /*padding: 2px, 2px, 2px, 2px;*/
+    padding-left: 4px;
+    padding-right: 4px;
+    float: left;
+    margin-right: 5px;
+    background-color: lightgray;
+}
+
+
+.post-edit-delete
+{
+    font-size: 12px;
+    /*font-style: italic;*/
+    /*vertical-align: middle;*/
+    /*border-bottom: #eee solid 1px;*/
+    /*padding: 10px;*/
+    /*text-align: left;*/
+    padding-bottom: 5px;
+    padding-top: 5px;
+    float: right;
+}
+
+
+.edit
+{
+    font-size: 12px;
+    /*float: right;
+    font-weight: bold;*/
+    background: none;
+    /*font-size: 1em;*/
+    border: none;
+    /*position: relative;*/
+}
+
+
+.delete
+{
+    font-size: 12px;
+    background: none;
+    border: none;
+}
+
+
+.post-column-edit
+{
+    font-size: 12px;
+    font-style: italic;
+    vertical-align: bottom;
+    border-bottom: #eee solid 1px;
+    padding: 10px;
+}
+
+
+#edit
+{
+    float: left;
+}
+
+#delete
+{
+    float: right;
+}
+
+
+#post-row
+{
+    border-bottom: #eee solid 1px;
+}
+
+.hovered
+{
+    /*background-color: #FFFFF5;*/
+    background-color: #F8F8FF;
+    border-color: #black;
+    /* or try:  F8F8FF */
+    /*cursor: pointer;*/
+}
+
+.not-hovered
+{
+    background-color: white;
+}
+
+
+#pencil
+{
+
+}
+
+.unhidden
+{
+    visibility: visible;
+}
+
+.hidden
+{
+    visibility: hidden;
+}
+
+/*#middle .form-control*/
+/*{
+    /* center form controls */
+    /* display: inline-block; */
+
+    /* override Bootstrap's 100% width for form controls */
+    /* width: auto;
+}
+
+#bottom
+{*/
+    /* shrink bottom's font size */
+    /* font-size: smaller;*/
+
+    /* surround with whitespace */
+    /*margin: 20px;*/
+
