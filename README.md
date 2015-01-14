@@ -1,5 +1,5 @@
 # ProjectKB
-A website to centralize documentation of my projects and learning experiences.
+A website to centralize documentation of my projects and experiences.
 
 I will record my pending bug fixes and feature requests under "Issues" in this repo. 
 
