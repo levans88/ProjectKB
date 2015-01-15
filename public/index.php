@@ -115,7 +115,7 @@
     		}
 
     		echo "<table name='post-table' id='post-table'>";
-    		echo "<ul>";
+    		//echo "<ul>";
 
 				
 				//******************this is for displaying posts to table***************    		
@@ -123,61 +123,66 @@
     		$postContent = getPostContent("all");
 
     		//loop through posts
-    		foreach ($postContent as $post) {
-    			$post = nl2br($post);
-    			$postTagString = "";
-    			$postTags = getPostTags($postID);
-    			$postDateTimeArray = getPostDateTime($postID);
-    			$postDateTime = $postDateTimeArray[0];
+	    	if ($postContent) {	
+	    		foreach ($postContent as $post) {
+	    			$post = nl2br($post);
+	    			$postTagString = "";
+	    			$postTags = getPostTags($postID);
+	    			$postDateTimeArray = getPostDateTime($postID);
+	    			$postDateTime = $postDateTimeArray[0];
 
-    			if (!($postTags)) {
-    				$postTagString = "";
-    			}
-    			else {
-
-	    			//loop through tags of each post
-	    			foreach ($postTags as $postTag) {
-	    				$postTagString .= "<div class='tag-bottom'>" . $postTag . "</div>";
+	    			if (!($postTags)) {
+	    				$postTagString = "";
 	    			}
-					}
-    			
-    			$postTagString = rtrim($postTagString, ', ');
+	    			else {
 
-    			echo "<tr id='post-row'>";
-    			echo "<li>";
-    			echo "<td class='post-column-posts'>";
-    			echo "<div class='post-date-time'>" . $postDateTime . "</div><br>";
-    			echo "<div class='post-content'>" . $post . "</div><br>";
-    			echo "<div class='post-tags'>" . $postTagString . "</div>";
+		    			//loop through tags of each post
+		    			foreach ($postTags as $postTag) {
+		    				$postTagString .= "<div class='tag-bottom'>" . $postTag . "</div>";
+		    			}
+						}
+	    			
+	    			$postTagString = rtrim($postTagString, ', ');
 
-    			echo "<div class='post-edit-delete'>";
-					
-					echo "<div id='edit'>";
-					echo "<form action='' method='post'>";
-    			echo "<input type='submit' class='edit' value='Edit'>";
-    			//provides hidden $postID value to pass to $_POST
-    			echo "<input type='hidden' name='postID' value='$postID'>";
-    			echo "</form>";
-    			echo "</div>";
+	    			echo "<tr id='post-row'>";
+	    			//echo "<li>";
+	    			echo "<td class='post-column-posts'>";
+	    			echo "<div class='post-date-time'>" . $postDateTime . "</div><br>";
+	    			echo "<div class='post-content'>" . $post . "</div><br>";
+	    			echo "<div class='post-tags'>" . $postTagString . "</div>";
 
-    			echo "<div id='delete'>";
-    			echo "<form action='' method='post'>";
-    			echo "<input type='submit' class='delete' value='Delete'>";
-    			//provides hidden $postID value to pass to $_POST
-    			echo "<input type='hidden' name='postID' value='$postID'>";
-    			echo "<input type='hidden' name='delete' value='TRUE'>";
-					echo "</form>";
-    			echo "</div>";
-    			echo "</div>";
-    			
-    			echo "</td>";
-    			echo "</li>";
-    			echo "</tr>";
+	    			echo "<div class='post-edit-delete'>";
+						
+						echo "<div id='edit'>";
+						echo "<form action='' method='post'>";
+	    			echo "<input type='submit' class='edit' value='Edit'>";
+	    			//provides hidden $postID value to pass to $_POST
+	    			echo "<input type='hidden' name='postID' value='$postID'>";
+	    			echo "</form>";
+	    			echo "</div>";
 
-    			//loop through postcontent in reverse since getPostContent() results are sorted opposite
-    			$postID -= 1;  
-    		}
-    		echo "</ul>";
+	    			echo "<div id='delete'>";
+	    			echo "<form action='' method='post'>";
+	    			echo "<input type='submit' class='delete' value='Delete'>";
+	    			//provides hidden $postID value to pass to $_POST
+	    			echo "<input type='hidden' name='postID' value='$postID'>";
+	    			echo "<input type='hidden' name='delete' value='TRUE'>";
+						echo "</form>";
+	    			echo "</div>";
+	    			echo "</div>";
+	    			
+	    			echo "</td>";
+	    			//echo "</li>";
+	    			echo "</tr>";
+
+	    			//loop through postcontent in reverse since getPostContent() results are sorted opposite
+	    			$postID -= 1;  
+	    		}
+	    	}
+	    	else {
+	    		echo "<br><div>No data available.</div>";
+	    	}
+    		//echo "</ul>";
     		echo "</table>";
 			?>
 		</div>

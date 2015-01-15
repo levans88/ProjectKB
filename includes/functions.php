@@ -119,6 +119,7 @@
         
         $postContent = array();
         
+        //if $postID is a specific ID it will be numeric, if it is "all" as a parameter it will not be
         if (is_numeric($postID)) {
             //get single postcontent field based on postID
             $postContent = query_select(9, 2, $postID, "none", "none", "none");
@@ -127,7 +128,6 @@
             //get all postcontent fields
             $postContent = query_select(2, 2, "none", "none", "none", "none");
         }
-
         return $postContent;
     }
 
