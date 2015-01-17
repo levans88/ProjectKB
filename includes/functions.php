@@ -71,7 +71,9 @@
             "SELECT postid, postdatetime FROM posts WHERE postid = '$value'",
             "SELECT postcontent FROM posts WHERE postid = '$value'",
             "SELECT * FROM posts WHERE postid = '$value'",
-            "SELECT * FROM posts_tags WHERE posts_postid = '$value'"
+            "SELECT * FROM posts_tags WHERE posts_postid = '$value'",
+            "SELECT * FROM posts WHERE postid = (SELECT MIN(postid) FROM posts WHERE postid < '$value')",
+            "SELECT postid FROM posts ORDER BY postid DESC"
             );
         
         $fields = array("catname", "tagname", "postcontent", "tagid", "MAX", "MIN", "catid", "postdatetime", "postid", "posts_postid");
@@ -114,6 +116,12 @@
         }
     }
 
+
+    function getPostIDs() {
+        $postIDs = array();
+        $postIDs = query_select(13, 8, "none", "none", "none", "none");
+        return $postIDs;
+    }
 
     function getPostContent($postID) {
         
@@ -213,6 +221,13 @@
     function delPost ($postID) {
         query_delete(0, $postID);
         query_delete(1, $postID);
+    }
+
+
+    function getNextPostID($postID) {
+        $nextID = query_select(12, 8, $postID, "none", "none", "none");
+        $nextID = $nextID[0];
+        return $nextID;
     }
 
 ?>
