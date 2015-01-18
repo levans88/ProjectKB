@@ -1,24 +1,32 @@
 <?php
-require("../includes/config.php"); 
+session_start();
+//session_destroy();
+require("../includes/config.php");
+//require_once("donotupload.php");
+
 //echo '<pre>';
 //print_r($_POST);
+//echo "<br>";
+//print_r($_SESSION);
 //echo '</pre>';
+
 ?>
 	<html>
 		<head>
 			<link rel="stylesheet" type="text/css" href="css/styles.css" />
 			<script type="text/javascript" src="js/scripts.js"></script>
-			<title>Title</title>
+			<title>Lenny Evans</title>
 		</head>
 
 		<body>
 			<div class="container">
-			<header>
-				<h1>Title</h1>
-
-					<form class="newpost" action="" method="post">
+			<header id='header'>
+				<?php require("header.php"); ?>
+				<?php
+					if ($_SESSION["loggedIn"] === TRUE) {
+						echo "<div id='form-container'>";
+						echo "<form class='newpost' action='' method='post'>";
 						
-						<?php
 						//********************************this part is for loading the header and loading a post (and tags) if editing**********
 						//********************************so when i hit post, edit -OR- *delete*, this code is executed on postback*******************					
 							$postTagsArray = array();
@@ -48,7 +56,7 @@ require("../includes/config.php");
 							//else {
 							//	$postContent = "";
 							//}
-
+							//echo "<br><br>";
 							echo "<textarea id='pastebox' name='pastebox' rows='8' cols='100'>" . $postContent . "</textarea>";
 						  
 						  echo "<div id='tag-table'>";
@@ -89,12 +97,27 @@ require("../includes/config.php");
 								//echo "postID was set/true";
 								echo "<input type='hidden' name='postID' value='$postID'>";
 							}
-						?>
-						<br>
-					</form>
-			</header>
-			<div id='post-container'>
-			<?php
+						
+						//echo "<br>";
+					echo "</form>";
+					echo "</div>";
+				}
+				
+			echo "</header>";
+			echo "<br>";
+			if (isset($_SESSION["loggedIn"])) {
+				if ($_SESSION["loggedIn"] === TRUE) {
+					echo "<div id='post-container-tall'>";
+				}
+				else {
+					echo "<div id='post-container-short'>";
+				}
+			}
+			else {
+				echo "<div id='post-container-short'>";
+			}
+			
+			
 
 				//*********************this is for writing posts to database****************************************************
 				//*********************this is where i need to receive postID in order to update instead of add to DB***********
@@ -126,12 +149,12 @@ require("../includes/config.php");
     			}
     		}
 
-    		echo "<table name='post-table' id='post-table'>";
     		//echo "<ul>";
 
 				
 				//******************this is for displaying posts to table***************
-				//**********************************************************************    		
+				//********************************************************************** 
+				echo "<table name='post-table' id='post-table'>";   		
 				//$postID = getMaxID("posts");
     		//$postContent = getPostContent("all");
     		$postIDs = getPostIDs();
@@ -170,24 +193,30 @@ require("../includes/config.php");
 
 	    			echo "<div class='post-edit-delete'>";
 						
-						echo "<div id='edit'>";
-						echo "<form action='' method='post'>";
-	    			echo "<input type='submit' class='edit' value='Edit'>";
-	    			//provides hidden $postID value to pass to $_POST
-	    			echo "<input type='hidden' name='postID' value='$postID'>";
-	    			echo "<input type='hidden' name='edit' value='TRUE'>";
-	    			echo "</form>";
-	    			echo "</div>";
+						if ($_SESSION["loggedIn"] === TRUE) {
+							
+							echo "<div id='edit'>";
+								echo "<form action='' method='post'>";
+		    				echo "<input type='submit' class='edit' value='Edit'>";
+		    				//provides hidden $postID value to pass to $_POST
+		    				echo "<input type='hidden' name='postID' value='$postID'>";
+		    				echo "<input type='hidden' name='edit' value='TRUE'>";
+		    				echo "</form>";
+		    				echo "</div>";
 
-	    			echo "<div id='delete'>";
-	    			echo "<form action='' method='post'>";
-	    			echo "<input type='submit' class='delete' value='Delete'>";
-	    			//provides hidden $postID value to pass to $_POST
-	    			echo "<input type='hidden' name='postID' value='$postID'>";
-	    			echo "<input type='hidden' name='delete' value='TRUE'>";
-						echo "</form>";
-	    			echo "</div>";
-	    			echo "</div>";
+		    				echo "<div id='delete'>";
+		    				echo "<form action='' method='post'>";
+		    				echo "<input type='submit' class='delete' value='Delete'>";
+		    				//provides hidden $postID value to pass to $_POST
+		    				echo "<input type='hidden' name='postID' value='$postID'>";
+		    				echo "<input type='hidden' name='delete' value='TRUE'>";
+								echo "</form>";
+		    				echo "</div>";
+		    			echo "</div>";
+		    		}
+		    		else {
+		    			echo "<br><br>";
+		    		}
 	    			
 	    			echo "</td>";
 	    			//echo "</li>";
@@ -208,6 +237,7 @@ require("../includes/config.php");
 		<script>
 			addTagMenuHandlers();
 			addRowHandlers();
+			addNavMenuHandlers();
 		</script>
 		</body>
 	</html>

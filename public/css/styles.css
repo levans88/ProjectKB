@@ -12,6 +12,13 @@ body
     font-family: sans-serif;
     background-image: linear-gradient(to bottom, #315481, #918e82 100%);
     background-attachment: fixed;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .container
@@ -24,14 +31,25 @@ body
     margin-right: auto;
     margin: 0 auto;
     background: white;
-    width: 80%;
+    width: 60%;
 }
 
 
 header
 {
     background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);
-    padding: 1px 15px 1px 15px;
+    /*padding: 1px 15px 1px 15px;*/
+
+    min-height: 100px;
+    position: fixed;
+    width: 60%;
+}
+
+
+#form-container
+{
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 
@@ -52,6 +70,7 @@ header
     /*padding: 10px;*/
     /*border-right: lightgray solid 1px;
     border-left: lightgray solid 1px;*/
+
 }
 
 
@@ -94,9 +113,19 @@ header
 }
 
 
-#post-container
+#post-container-short
 {
-    padding: 1px 15px 20px 15px;
+    /*padding: 1px 15px 20px 15px;*/
+    width: 100%;
+    margin-top: 100px;
+}
+
+
+#post-container-tall
+{
+    /*padding: 1px 15px 20px 15px;*/
+    width: 100%;
+    margin-top: 340px;
 }
 
 
@@ -131,7 +160,7 @@ header
 
 .post-content
 {
-    font-size: 16px;
+    font-size: 14px;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -153,9 +182,6 @@ header
     float: left;
 
 }
-
-
-
 
 
 .tag-bottom
@@ -181,7 +207,7 @@ header
     /*border-bottom: #eee solid 1px;*/
     /*padding: 10px;*/
     /*text-align: left;*/
-    padding-bottom: 5px;
+    /*padding-bottom: 5px;*/
     padding-top: 5px;
     float: right;
 }
@@ -190,6 +216,7 @@ header
 .edit
 {
     font-size: 12px;
+    text-decoration: underline;
     /*float: right;
     font-weight: bold;*/
     background: none;
@@ -199,22 +226,39 @@ header
 }
 
 
+.edit-hovered
+{
+    font-size: 12px;
+    text-decoration: underline;
+    /*float: right;
+    font-weight: bold;*/
+    background: none;
+    /*font-size: 1em;*/
+    border: none;
+    /*position: relative;*/
+    /*background-color: #78C3EB;*/
+    background-color: #86C9ED;
+    cursor: pointer;
+}
+
+
 .delete
 {
     font-size: 12px;
     background: none;
     border: none;
+    text-decoration: underline;
 }
 
 
-.post-column-edit
+/*.post-column-edit
 {
     font-size: 12px;
     font-style: italic;
     vertical-align: bottom;
     border-bottom: #eee solid 1px;
     padding: 10px;
-}
+}*/
 
 
 #edit
@@ -237,7 +281,7 @@ header
 {
     /*background-color: #FFFFF5;*/
     background-color: #F8F8FF;
-    border-color: #black;
+    /*border-color: #black;*/
     /* or try:  F8F8FF */
     /*cursor: pointer;*/
 }
@@ -262,21 +306,4 @@ header
 {
     visibility: hidden;
 }
-
-/*#middle .form-control*/
-/*{
-    /* center form controls */
-    /* display: inline-block; */
-
-    /* override Bootstrap's 100% width for form controls */
-    /* width: auto;
-}
-
-#bottom
-{*/
-    /* shrink bottom's font size */
-    /* font-size: smaller;*/
-
-    /* surround with whitespace */
-    /*margin: 20px;*/
 
