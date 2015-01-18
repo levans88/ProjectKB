@@ -17,7 +17,7 @@
     }
 
     
-    function query_insert($query, $postContent, $tagID, $postID, $tagName, $catID, $postDateTime) {
+    function query_insert($query, $postContent, $tagID, $postID, $tagName, $catID, $postDateTime, $username, $hash) {
 
         $posts_postid = $postID;
 
@@ -25,7 +25,8 @@
         $queries = array(
             "INSERT INTO posts (postcontent, postdatetime) VALUES ('$postContent', '$postDateTime')",
             "INSERT INTO posts_tags (posts_postid, tags_tagid) VALUES ('$posts_postid', '$tagID')",
-            "INSERT INTO tags VALUES ('$tagName', '$catID')"
+            "INSERT INTO tags VALUES ('$tagName', '$catID')",
+            "INSERT INTO users (username, hash) VALUES ('$username', '$hash')"
             //echo mysqli_insert_id();
             );
 
@@ -73,10 +74,11 @@
             "SELECT * FROM posts WHERE postid = '$value'",
             "SELECT * FROM posts_tags WHERE posts_postid = '$value'",
             "SELECT * FROM posts WHERE postid = (SELECT MIN(postid) FROM posts WHERE postid < '$value')",
-            "SELECT postid FROM posts ORDER BY postid DESC"
+            "SELECT postid FROM posts ORDER BY postid DESC",
+            "SELECT hash FROM users WHERE username = '$value'"
             );
         
-        $fields = array("catname", "tagname", "postcontent", "tagid", "MAX", "MIN", "catid", "postdatetime", "postid", "posts_postid");
+        $fields = array("catname", "tagname", "postcontent", "tagid", "MAX", "MIN", "catid", "postdatetime", "postid", "posts_postid", "hash");
         
         $result = mysqli_query($conn, $queries[$query]);
 
@@ -177,7 +179,7 @@
         else
         {
             //insert and note last updated postID
-            $lastID = query_insert(0, $postContent, "none", "none", "none", "none", $postDateTime);
+            $lastID = query_insert(0, $postContent, "none", "none", "none", "none", $postDateTime, "none", "none");
             return $lastID;
         }
         
@@ -213,7 +215,7 @@
 
         //write tag id's to posts_tags, once for each row, using appropriate $ID
         foreach ($tagids as $tagID) {
-            query_insert(1, "none", $tagID, $ID, "none", "none", "none");
+            query_insert(1, "none", $tagID, $ID, "none", "none", "none", "none", "none");
         }
     }
 
@@ -228,6 +230,36 @@
         $nextID = query_select(12, 8, $postID, "none", "none", "none");
         $nextID = $nextID[0];
         return $nextID;
+    }
+
+
+    function setUserPass($username, $hash) {
+        query_insert(3, "none", "none", "none", "none", "none", "none", $username, $hash);
+    }
+
+
+    function authenticate($username, $password) {
+        
+        //echo $username . $password;
+        //if hashing the password with its hash as the salt returns the same hash...
+        $hashAsSaltArray = query_select(14, 10, $username, "none", "none", "none");
+        $hashAsSalt = $hashAsSaltArray[0];
+
+        $hash = crypt($password, $hashAsSalt);
+        
+        //echo "hash is:   " . $hash . "<br>";
+        //echo "hashAsSalt is:   " . $hashAsSalt;
+        
+        if ($hash === $hashAsSalt) {
+            
+            return TRUE;
+        }
+        else {
+
+            return FALSE;
+        }
+
+        
     }
 
 ?>
