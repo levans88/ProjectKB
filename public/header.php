@@ -1,7 +1,6 @@
+<div class='header-container'>
 
-
-
-<div style='float: right; padding-right: 10px;'>
+<div style='float: right; padding-right: 15px;'>
 
 	<div id='nav-menu' style='float: left; padding-left: 10; padding-right: 15px; padding-top: 13px; font-weight: bold;'>
 		<br>
@@ -44,6 +43,7 @@
 	//$_SESSION["loggedIn"] = FALSE;
 	
 	if (isset($_POST["logout"]) && isset($_SESSION["username"])) {
+		session_start();
 		session_destroy();
 		header('location:index.php');
 	}
@@ -68,8 +68,8 @@
 		echo "<div id='login-menu' style='float: left; margin-top: 3px;'>";
 		echo "<br>";
 		echo "<form class='login' action='' method='post'>";
-			echo "<input type='text' name='username' size='10'><br>";
-			echo "<input type='password' name='password' size='10'><br>";
+			echo "<input type='text' name='username' class='transparent-textbox' placeholder='Username' size='10'><br>";
+			echo "<input type='password' name='password' class='transparent-textbox' placeholder='Password' size='10'><br>";
 			//echo "<br>";
 			echo "<div style='text-align: center;'><input type='submit' class='edit' name='login' value='Login'/></div>";
 		echo "</form>";
@@ -88,6 +88,7 @@
 		echo "</form>";
 		echo "</div>";
 	}
+echo "</div>";
+//echo "<div style='float: left;'>test</div>";
+echo "</div>";
 ?>
-
-</div>

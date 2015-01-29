@@ -1,11 +1,5 @@
 <?php
 
-    /**
-     * functions.php
-     *
-     * Helper functions.
-     */
-
     require_once("constants.php");
 
     function connectdb() {
@@ -25,7 +19,7 @@
         $queries = array(
             "INSERT INTO posts (postcontent, postdatetime) VALUES ('$postContent', '$postDateTime')",
             "INSERT INTO posts_tags (posts_postid, tags_tagid) VALUES ('$posts_postid', '$tagID')",
-            "INSERT INTO tags VALUES ('$tagName', '$catID')",
+            "INSERT INTO tags VALUES ('$tagID', '$catID', '$tagName')",
             "INSERT INTO users (username, hash) VALUES ('$username', '$hash')"
             //echo mysqli_insert_id();
             );
@@ -58,12 +52,12 @@
     }
 
 
-    function query_select($query, $field, $value, $tagString, $table, $catID) {
+    function query_select($query, $field, $value, $tagString, $table, $catID, $limit, $findQueryRemainder) {
         $conn = connectdb();
         $queries = array(
             "SELECT catname FROM categories",
             "SELECT a.tagname, b.catname FROM tags a, categories b WHERE a.catid = b.catid AND b.catname = '$value'",
-            "SELECT postid, postcontent FROM posts ORDER BY postid DESC",
+            "SELECT postid, postcontent FROM posts ORDER BY postid DESC LIMIT $limit",
             "SELECT tagid FROM tags WHERE tagname IN($tagString)",
             "SELECT t.tagname FROM tags as t, posts as p, posts_tags as pt WHERE pt.tags_tagid = t.tagid AND pt.posts_postid = p.postid AND p.postid = '$value'",
             "SELECT MAX($value) as MAX FROM $table",
@@ -74,8 +68,12 @@
             "SELECT * FROM posts WHERE postid = '$value'",
             "SELECT * FROM posts_tags WHERE posts_postid = '$value'",
             "SELECT * FROM posts WHERE postid = (SELECT MIN(postid) FROM posts WHERE postid < '$value')",
-            "SELECT postid FROM posts ORDER BY postid DESC",
-            "SELECT hash FROM users WHERE username = '$value'"
+            "SELECT postid FROM posts ORDER BY postid DESC LIMIT $limit",
+            "SELECT hash FROM users WHERE username = '$value'",
+            "SELECT p.postid FROM tags as t, posts as p, posts_tags as pt WHERE p.postid = pt.posts_postid AND pt.tags_tagid = t.tagid AND t.tagname = '$value' LIMIT $limit",
+            //partial query, completed by find function
+            "SELECT DISTINCT p.postid, p.postcontent FROM tags as t, posts as p, posts_tags as pt
+                WHERE p.postid = pt.posts_postid AND pt.tags_tagid = t.tagid AND " . $findQueryRemainder 
             );
         
         $fields = array("catname", "tagname", "postcontent", "tagid", "MAX", "MIN", "catid", "postdatetime", "postid", "posts_postid", "hash");
@@ -97,13 +95,13 @@
 
 
     function getCats() {
-        $categories = query_select(0, 0, "none", "none", "none", "none");
+        $categories = query_select(0, 0, "none", "none", "none", "none", "none", "none");
         return $categories;
     }
 
 
     function getTags($cat, $type) {
-        $tagsArray = query_select(1, 1, $cat, "none", "none", "none");
+        $tagsArray = query_select(1, 1, $cat, "none", "none", "none", "none", "none");
 
         $tagString = "";
         foreach ($tagsArray as $tag) {
@@ -119,50 +117,63 @@
     }
 
 
-    function getPostIDs() {
+    function getPostIDs($tagName, $limit) {
         $postIDs = array();
-        $postIDs = query_select(13, 8, "none", "none", "none", "none");
+        if ($tagName === "none") {
+            $postIDs = query_select(13, 8, "none", "none", "none", "none", $limit, "none");
+        }
+        else {
+            $postIDs = query_select(15, 8, $tagName, "none", "none", "none", $limit, "none");
+        }
         return $postIDs;
     }
 
-    function getPostContent($postID) {
-        
+    function getPostContent($postID, $limit) {
+        //echo $limit;
         $postContent = array();
         
         //if $postID is a specific ID it will be numeric, if it is "all" as a parameter it will not be
         if (is_numeric($postID)) {
             //get single postcontent field based on postID
-            $postContent = query_select(9, 2, $postID, "none", "none", "none");
+            $postContent = query_select(9, 2, $postID, "none", "none", "none", "none", "none");
         }
         else if ($postID == "all") {
             //get all postcontent fields
-            $postContent = query_select(2, 2, "none", "none", "none", "none");
+            $postContent = query_select(2, 2, "none", "none", "none", "none", $limit, "none");
         }
         return $postContent;
     }
 
 
     function getPostDateTime($postID) {
-        $postDateTime = query_select(8, 7, $postID, "none", "none", "none");
+        $postDateTime = query_select(8, 7, $postID, "none", "none", "none", "none", "none");
         return $postDateTime;
     }
 
 
     function getPostTags($postID) {
-        $postTags = query_select(4, 1, $postID, "none", "none", "none");
+        $postTags = query_select(4, 1, $postID, "none", "none", "none", "none", "none");
         return $postTags;
     }
 
 
     function getMaxID($table) {
-        $maxIDArray = query_select(5, 4, "postid", "none", $table, "none");
+        $value = "";
+        if ($table === "posts") {
+            $value = "postid";
+        }
+        else {
+            $value = "tagid";
+        }
+        //echo ", $value is: " . $value;
+        $maxIDArray = query_select(5, 4, $value, "none", $table, "none", "none", "none");
         $maxID = $maxIDArray[0];
         return $maxID;
     }
 
 
     function getMinID($table) {
-        $minIDArray = query_select(6, 5, "postid", "none", $table, "none");
+        $minIDArray = query_select(6, 5, "postid", "none", $table, "none", "none", "none");
         $minID = $minIDArray[0];
         return $minID;
     }
@@ -171,7 +182,7 @@
     function setPostContent($postID, $postContent, $postDateTime) {
 
         //test for existing record to determine update vs insert
-        $postExist = query_select(10, 8, $postID, "none", "none", "none");
+        $postExist = query_select(10, 8, $postID, "none", "none", "none", "none", "none");
         if ($postExist) {
             //update
             query_update(0, $postID, $postContent, $postDateTime);
@@ -183,6 +194,26 @@
             return $lastID;
         }
         
+    }
+
+
+    function newTags($newTagsString) {
+        if ($newTagsString !== "none") {
+            $newTagsArray = explode(';', $newTagsString);
+            //echo $newTagsString;
+            //foreach($newTagsArray as $t) {
+              //  echo $t;
+            //}
+            foreach($newTagsArray as $tagName) {
+                //echo "inserting: " . $tagName;
+                //temporary over-ride so category is always 9 (none)
+                $catID = 9;
+                $table = "tags";
+                $tagID = getMaxID($table) + 1;
+                //echo "tagID: " . $tagID . "end.";
+                query_insert(2, "none", $tagID, "none", $tagName, $catID, "none", "none", "none");
+            }
+        }  
     }
 
 
@@ -198,10 +229,10 @@
         $tagString = rtrim($tagString, ', ');
 
         //get the tagid's by passing tagString
-        $tagids = query_select(3, 3, "none", $tagString, "none", "none");
+        $tagids = query_select(3, 3, "none", $tagString, "none", "none", "none", "none");
         
         //test for existing records to determine update vs insert
-        $tagExist = query_select(11, 9, $postID, "none", "none", "none");
+        $tagExist = query_select(11, 9, $postID, "none", "none", "none", "none", "none");
 
         //if there were existing tags, choose which ID to use, the next one or the one most recently updated
         if ($tagExist) {
@@ -227,10 +258,68 @@
 
 
     function getNextPostID($postID) {
-        $nextID = query_select(12, 8, $postID, "none", "none", "none");
+        $nextID = query_select(12, 8, $postID, "none", "none", "none", "none", "none");
         $nextID = $nextID[0];
         return $nextID;
     }
+
+
+    function find($termString, $limit) {
+        $findQueryRemainder = "";
+        $termStringLength = strlen($termString);
+        
+        $first = substr($termString, 0, 1);
+        $last = substr($termString, ($termStringLength - 1), 1);
+        //echo "<br>";
+        //echo $first;
+        //echo $last;
+
+        //if the first and last characters in $termString AREN'T BOTH a double quote...
+        if ($first !== "\"" && $last !== "\"") {
+            
+            //then split $termString into array values on the space character
+            $termArray = explode(' ', $termString);
+            
+            foreach ($termArray as $termTag) {
+                $findQueryRemainder .= "t.tagname LIKE '%" . $termTag . "%' AND ";
+            }
+            $findQueryRemainder = rtrim($findQueryRemainder, " AND ");
+
+            $findQueryRemainder .= " OR ";
+
+            foreach ($termArray as $termPostContent)
+            {
+                $findQueryRemainder .= "p.postcontent LIKE '%" . $termPostContent . "%' AND ";
+            }
+            $findQueryRemainder = rtrim($findQueryRemainder, " AND ");
+            //echo "<br>";
+            //echo "1";
+            //echo "<br>";
+            //echo $findQueryRemainder;
+        }
+        else {
+            $termString = ltrim($termString, "\"");
+            $termString = rtrim($termString, "\"");
+            //echo "<br>";
+            //echo $termString;
+            //echo "<br>";
+            
+            $findQueryRemainder = "t.tagname LIKE '%" . $termString . "%' OR p.postcontent LIKE '%" . $termString . "%'";
+            //echo "<br>";
+            //echo "2";
+            //echo "<br>";
+            //echo $findQueryRemainder;
+        }
+        $findQueryRemainder .= " LIMIT $limit";
+        $postIDs = query_select(16, 8, "none", "none", "none", "none", $limit, $findQueryRemainder);
+        //query_select($query, $field, $value, $tagString, $table, $catID, $limit, $findQueryRemainder)
+
+        return $postIDs;
+    }
+        //"SELECT DISTINCT p.postid, p.postcontent FROM tags as t, posts as p, posts_tags as pt
+        //WHERE p.postid = pt.posts_postid AND pt.tags_tagid = t.tagid AND ...t.tagname LIKE '%$termString%' ... OR ... p.postcontent LIKE '%robotics%'
+
+
 
 
     function setUserPass($username, $hash) {
@@ -242,7 +331,7 @@
         
         //echo $username . $password;
         //if hashing the password with its hash as the salt returns the same hash...
-        $hashAsSaltArray = query_select(14, 10, $username, "none", "none", "none");
+        $hashAsSaltArray = query_select(14, 10, $username, "none", "none", "none", "none", "none");
         $hashAsSalt = $hashAsSaltArray[0];
 
         $hash = crypt($password, $hashAsSalt);
@@ -258,8 +347,28 @@
 
             return FALSE;
         }
-
-        
     }
+
+
+    function findAllSubStrings($haystack, $needle) {
+        $s = 0;
+        $i = 0;
+    
+    while(is_integer($i)) {
+ 
+        $i = stripos($haystack, $needle, $s);
+ 
+        if(is_integer($i)) {
+            $aStrPos[] = $i;
+            $s = $i + strlen($needle);
+        }
+    }
+ 
+    if(isset($aStrPos)) {
+        return $aStrPos;
+    } else {
+        return false;
+    }
+}
 
 ?>
