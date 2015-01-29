@@ -4,11 +4,16 @@ session_start();
 require("../includes/config.php");
 //require_once("donotupload.php");
 
-//echo '<pre>';
-//print_r($_POST);
-//echo "<br>";
-//print_r($_SESSION);
-//echo '</pre>';
+$devMode = FALSE;
+if ($devMode === TRUE) {
+	echo '<pre>';
+	echo "POST";
+	print_r($_POST);
+	echo "<br>";
+	echo "SESSION";
+	print_r($_SESSION);
+	echo '</pre>';
+}
 
 ?>
 	<html>
@@ -21,8 +26,34 @@ require("../includes/config.php");
 		<body>
 			<div class="container">
 			<header id='header'>
-				<?php require("header.php"); ?>
 				<?php
+					require("header.php");
+
+					if (isset($_POST["limit"])) {
+						$limit = $_POST["limit"];
+					}
+					//else if (isset($_SESSION["limit"])) {
+						//$limit = $_SESSION["limit"];
+					//}
+					else {
+						$limit = 5;
+					}
+					//$_POST["limit"] = $limit;
+					//$_SESSION["limit"] = $limit;
+
+
+					if (isset($_POST["find"])) {
+						$termString = $_POST["find"];
+					}
+					//else if (isset($_SESSION["find"])) {
+						//$termString = $_SESSION["find"];
+					//}
+					else {
+						$termString = FALSE;
+					}
+					//$_SESSION["find"] = $termString;
+
+
 					if ($_SESSION["loggedIn"] === TRUE) {
 						echo "<div id='form-container'>";
 						echo "<form class='newpost' action='' method='post'>";
@@ -32,7 +63,7 @@ require("../includes/config.php");
 							$postTagsArray = array();
 							$postID = "";
 							$postContent = "";
-							
+
 							if (isset($_POST["postID"])) {
 								
 								//get the set post id
@@ -41,7 +72,11 @@ require("../includes/config.php");
 								if(isset($_POST["edit"])) {
 								
 								//get its contents and tags
-								$postContent = getPostContent($postID);
+								$limit = 1;
+								//$_POST["limit"] = 1;
+								//$_SESSION["limit"] = 1;
+								//echo $limit;
+								$postContent = getPostContent($postID, $limit);
 								$postContent = $postContent[0];
 								$postTagsArray = getPostTags($postID);
 								}
@@ -57,7 +92,7 @@ require("../includes/config.php");
 							//	$postContent = "";
 							//}
 							//echo "<br><br>";
-							echo "<textarea id='pastebox' name='pastebox' rows='8' cols='100'>" . $postContent . "</textarea>";
+							echo "<textarea id='pastebox' name='pastebox' placeholder='Paste or type content here...' rows='4' cols='100'>" . $postContent . "</textarea>";
 						  
 						  echo "<div id='tag-table'>";
 								echo "<ul id='tag-list'>";
@@ -86,11 +121,18 @@ require("../includes/config.php");
 										echo "<label class='$status' for='$tag'>" . $tag . "</label>" . "</div></li>";
 									}
 								}
-
+								echo "<div style='display: inline-block;'>";
+								echo "<div class='new-tags'>new:</div>&nbsp&nbsp<input type='text' class='transparent-textbox' placeholder='ex: tag1;tag2' name='newTags' size='10'>";
+								echo "</div>";
 								echo "</ul>";
 							echo "</div>";
-
+						//echo "<div>";
+						//echo "<div style='float: right;'>";
 						echo "<input type='submit' name='post' value='Post'/>";
+						//echo "</div>";
+						
+						//echo "</div>";
+
 						//***************************this is another hidden input so that i can add (keep) postID in $_POST ...IF we were editing... *****
 						//***************************this makes sure the same postid gets edited and we're not doing an insert****************************
 							if ($postID == TRUE) {
@@ -102,9 +144,8 @@ require("../includes/config.php");
 					echo "</form>";
 					echo "</div>";
 				}
-				
 			echo "</header>";
-			echo "<br>";
+			require("filter.php");
 			if (isset($_SESSION["loggedIn"])) {
 				if ($_SESSION["loggedIn"] === TRUE) {
 					echo "<div id='post-container-tall'>";
@@ -130,6 +171,16 @@ require("../includes/config.php");
 						$postID = "none";
 					}
 
+					$newTagsString = "";
+					$newTagsArray = array();
+					if(isset($_POST["newTags"])) {
+						$newTagsString = rtrim($_POST["newTags"], '; ');
+						$newTagsArray = explode(';', $newTagsString);
+					}
+					else {
+						$newTags = "none";
+					}
+
 					$postContent = $_POST["pastebox"];
     			$postContent = htmlentities($postContent, ENT_QUOTES);
     			$tagsArray = array();
@@ -137,18 +188,32 @@ require("../includes/config.php");
     			if (!empty($_POST['tag_boxes'])) {
     				foreach($_POST['tag_boxes'] as $selected) {
     					$tagsArray[] = $selected;
+    					//echo "tag_boxes test";
     				}
-    			
+    			}
+
+    			if (!empty($_POST["newTags"])) {
+    				foreach($newTagsArray as $t) {
+    					$tagsArray[] = $t;
+    					//echo "new tags test";
+    				}
+    			}
+    				
+    			if (!empty($tagsArray)) {
     				$postDateTime = date("Y-m-d H:i:s");
     				$lastID = setPostContent($postID, $postContent, $postDateTime);
+    				newTags($newTagsString);
+    				//echo $newTagsString;
+            //foreach($newTagsArray as $t) {
+              //  echo $t;
+            //}
     				setPostTags($postID, $tagsArray, $lastID);
     			}
     			else {
-    				echo "<br>";
+    				//echo "<br>";
     				echo "<p style='color: red;'>No tags selected.<p>";
     			}
     		}
-
     		//echo "<ul>";
 
 				
@@ -157,39 +222,100 @@ require("../includes/config.php");
 				echo "<table name='post-table' id='post-table'>";   		
 				//$postID = getMaxID("posts");
     		//$postContent = getPostContent("all");
-    		$postIDs = getPostIDs();
+				//$tagName = "";
+    		
+
+
+				//if there are any search terms in $_POST, perform the search
+				if ($termString) {
+					$postIDs = find($termString, $limit);
+				}
+				//otherwise, allow for retrieving posts based on a previously set tag name
+				else {
+
+	    		if (isset($_POST["tagName"])) {
+	    			$tagName = $_POST["tagName"];
+	    		}
+	    		else if (isset($_SESSION["tagName"])) {
+	    			$tagName = $_SESSION["tagName"];
+	    		}
+	    		else {
+	    			$tagName = "none";
+	    		}
+	    		$_SESSION["tagName"] = $tagName;
+	    		
+	    		$postIDs = getPostIDs($tagName, $limit);
+	    	}
+  
     		//loop through posts
-	    	if ($postIDs) {										//if i got anything from getPostContent
+	    	if ($postIDs) {
 	    		foreach ($postIDs as $postID) {
-	    			//echo "postContent[3]: " . $postContent[3];
-	    			$postContent = getPostContent($postID);
-	    			$postContent = nl2br($postContent[0]);							//then replace new lines with breaks
+	    			$postContent = getPostContent($postID, $limit);
+	    			$postContent = nl2br($postContent[0]);	//then replace new lines with breaks
+
+	    			//find "http://" and "https://" and return their positions in arrays
+	    			//$postContentHttp = findAllSubStrings($postContent, "http://");
+	    			//$postContentHttps = findAllSubStrings($postContent, "https://");
+
+	    			//if($postContentHttp) {
+	    				//foreach ($postContentHttp as $pchttp) {
+	    					//echo $pchttp;
+	    					//echo "<br>";
+	    				//}
+	    			//}
+	    			//if($postContentHttps) {
+	    				//foreach ($postContentHttps as $pchttps) {
+	    					//echo $pchttps;
+	    					//echo "<br>";
+	    				//}
+	    			//}
+
 	    			$postTagString = "";							//initialize $postTagString
 	    			$postTags = getPostTags($postID); //get tags based on the post id
 	    			$postDateTimeArray = getPostDateTime($postID);	//get date and time
 	    			$postDateTime = $postDateTimeArray[0];
+	    			
+	    			//remove time
+	    			$postDateArray = explode(' ', $postDateTime);
+						$postDate = $postDateArray[0];
+
+						//format date
+						$postDateParts = explode('-', $postDate);
+						$postDate = $postDateParts[1] . "-" . $postDateParts[2] . "-" . $postDateParts[0];
 
 	    			if (!($postTags)) {				//if there were no tags
 	    				$postTagString = "";		//then provide empty string
 	    			}
-	    			else {
 
-		    			//otherwise loop through tags of each post
-		    			foreach ($postTags as $postTag) {
-		    				$postTagString .= "<div class='tag-bottom'>" . $postTag . "</div>";  //and concatenate a string of tags including <div>'s
-		    			}
-						}
-	    			
-	    			$postTagString = rtrim($postTagString, ', ');  //trim off the trailing commas
+	    			//if (!isset($_POST['edit'])) {
+	    				//$limit = 5;
+	    			//}
 
 	    			//and now display everything
 	    			echo "<tr id='post-row'>";
-	    			//echo "<li>";
 	    			echo "<td class='post-column-posts'>";
-	    			//echo $postID;
-	    			echo "<div class='post-date-time'>" . $postDateTime . "</div><br>";
+	    			echo "<div class='post-date-time'>" . $postDate . "</div><br>";
 	    			echo "<div class='post-content'>" . $postContent . "</div><br>";
-	    			echo "<div class='post-tags'>" . $postTagString . "</div>";
+	    			
+	    			echo "<div id='tag-bottom-menu'>";
+	    			foreach ($postTags as $tagName) {
+	    				echo "<div class='tag-bottom'>";
+	    				echo "<form action='' method='post'>";
+	    				echo "<input type='submit' class='tag-bottom-submit' value='$tagName'>";
+	    				echo "<input type='hidden' name='tagName' value='$tagName'>";
+	    				//echo "<input type='hidden' name='limit' value='$limit'>";
+	    				echo "</form>";
+	    				echo "</div>";
+	    			}
+		    			echo "<div class='tag-bottom'>";
+		    			echo "<form action='' method='post'>";
+		    			echo "<input type='submit' style='font-style:normal; font-size:1.5em' class='tag-bottom-submit' value='*'>";
+		    			echo "<input type='hidden' name='tagName' value='none'>";
+		    			//echo "<input type='hidden' name='limit' value='$limit'>";
+		    			
+		    			echo "</form>";
+		    			echo "</div>";
+	    			echo "</div>";
 
 	    			echo "<div class='post-edit-delete'>";
 						
@@ -201,6 +327,7 @@ require("../includes/config.php");
 		    				//provides hidden $postID value to pass to $_POST
 		    				echo "<input type='hidden' name='postID' value='$postID'>";
 		    				echo "<input type='hidden' name='edit' value='TRUE'>";
+		    				//echo "<input type='hidden' name='limit' value='$limit'>";
 		    				echo "</form>";
 		    				echo "</div>";
 
@@ -210,6 +337,7 @@ require("../includes/config.php");
 		    				//provides hidden $postID value to pass to $_POST
 		    				echo "<input type='hidden' name='postID' value='$postID'>";
 		    				echo "<input type='hidden' name='delete' value='TRUE'>";
+		    				//echo "<input type='hidden' name='limit' value='$limit'>";
 								echo "</form>";
 		    				echo "</div>";
 		    			echo "</div>";

@@ -1,9 +1,3 @@
-/**
- * scripts.js
- *
- * Global JavaScript, if any.
- */
-
 function addRowHandlers() {
     var table = document.getElementById("post-table");
     var rows = table.getElementsByTagName("tr");
@@ -91,7 +85,7 @@ function addNavMenuHandlers() {
                 };
         
             var createLeaveHandler = 
-                function(row)
+                function(currentNavItem)
                 {
                     return function() {
                         this.className='edit';
@@ -102,6 +96,48 @@ function addNavMenuHandlers() {
         currentNavItem.onmouseout = createLeaveHandler(currentNavItem);
     }
 }
+
+
+function selectLimit(limit)
+{    
+    var selectBox = document.getElementById('limit');
+    selectBox.value = limit;
+}
+
+
+function setFind(termString)
+{
+    var findBox = document.getElementById('find');
+    findBox.value = termString;
+}
+
+/*function addTagBottomHandlers() {
+    var postTable = document.getElementById('post-table');
+    var tags = postTable.getElementsByTagName("input");
+    
+        for (i = 0; i < tags.length; i++) {
+            var currentTag = tags[i];
+            
+            var createHoverHandler = 
+                function(currentTag) 
+                {
+                    return function() {
+                        this.className='edit-hovered';
+                        };
+                };
+        
+            var createLeaveHandler = 
+                function(currentTag)
+                {
+                    return function() {
+                        this.className='edit';
+                    };
+                };
+        
+        currentTag.onmouseover = createHoverHandler(currentTag);
+        currentTag.onmouseout = createLeaveHandler(currentTag);
+    }
+}*/
 
 //function headerSize() {
     //var = document.getElementById('header').style.height;
