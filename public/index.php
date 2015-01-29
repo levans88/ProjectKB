@@ -73,6 +73,7 @@ if ($devMode === TRUE) {
 								
 								//get its contents and tags
 								$limit = 1;
+
 								//$_POST["limit"] = 1;
 								//$_SESSION["limit"] = 1;
 								//echo $limit;
@@ -126,12 +127,16 @@ if ($devMode === TRUE) {
 								echo "</div>";
 								echo "</ul>";
 							echo "</div>";
-						//echo "<div>";
-						//echo "<div style='float: right;'>";
-						echo "<input type='submit' name='post' value='Post'/>";
-						//echo "</div>";
 						
-						//echo "</div>";
+							if (isset($_POST["edit"])) {
+								$buttonValue = "Update";
+							}
+							else {
+								$buttonValue = "Post";
+							}
+
+						echo "<input type='submit' name='post' value='$buttonValue'/>";
+						
 
 						//***************************this is another hidden input so that i can add (keep) postID in $_POST ...IF we were editing... *****
 						//***************************this makes sure the same postid gets edited and we're not doing an insert****************************
@@ -224,16 +229,9 @@ if ($devMode === TRUE) {
     		//$postContent = getPostContent("all");
 				//$tagName = "";
     		
-
-
-				//if there are any search terms in $_POST, perform the search
-				if ($termString) {
-					$postIDs = find($termString, $limit);
-				}
-				//otherwise, allow for retrieving posts based on a previously set tag name
-				else {
-
-	    		if (isset($_POST["tagName"])) {
+    		//$postIDs = array();
+    		//if there is a tagName set, get it, else set it to "none"
+				if (isset($_POST["tagName"])) {
 	    			$tagName = $_POST["tagName"];
 	    		}
 	    		else if (isset($_SESSION["tagName"])) {
@@ -243,10 +241,25 @@ if ($devMode === TRUE) {
 	    			$tagName = "none";
 	    		}
 	    		$_SESSION["tagName"] = $tagName;
-	    		
+
+
+				//if we are editing and there is a postID set to be edited (makes sure we're not deleting instead)
+				if (isset($_POST["postID"])) {
+					if (isset($_POST["edit"])) {
+						$postIDs[0] = $_POST["postID"];
+					}
+				}
+				else if ($termString) {		//if there are any search terms in $_POST, perform the search
+						$postIDs = find($termString, $limit);
+				}
+				//otherwise, allow for retrieving posts based on a previously set tag name
+				else {
 	    		$postIDs = getPostIDs($tagName, $limit);
-	    	}
-  
+		    }
+	    	
+  			if (!isset($postIDs)) {
+  				$postIDs[0] = $postID;
+  			}
     		//loop through posts
 	    	if ($postIDs) {
 	    		foreach ($postIDs as $postID) {
@@ -294,7 +307,15 @@ if ($devMode === TRUE) {
 	    			//and now display everything
 	    			echo "<tr id='post-row'>";
 	    			echo "<td class='post-column-posts'>";
-	    			echo "<div class='post-date-time'>" . $postDate . "</div><br>";
+	    			echo "<div class='post-date-time'>" . $postDate . "</div>";
+
+	    			if ($devMode) {
+	    				echo "<div style='float: right;'>";
+	    				echo $postID;
+	    				echo "</div>";
+	    			}
+
+	    			echo "<br>";
 	    			echo "<div class='post-content'>" . $postContent . "</div><br>";
 	    			
 	    			echo "<div id='tag-bottom-menu'>";
