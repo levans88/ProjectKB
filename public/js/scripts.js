@@ -1,4 +1,4 @@
-function addRowHandlers() {
+/*function addRowHandlers() {
     var table = document.getElementById("post-table");
     var rows = table.getElementsByTagName("tr");
 
@@ -30,7 +30,7 @@ function addRowHandlers() {
         currentRow.onmouseover = createHoverHandler(currentRow);
         currentRow.onmouseout = createLeaveHandler(currentRow);
     }
-}
+}*/
 
 
 function addTagMenuHandlers() {

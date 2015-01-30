@@ -266,23 +266,6 @@ if ($devMode === TRUE) {
 	    			$postContent = getPostContent($postID, $limit);
 	    			$postContent = nl2br($postContent[0]);	//then replace new lines with breaks
 
-	    			//find "http://" and "https://" and return their positions in arrays
-	    			//$postContentHttp = findAllSubStrings($postContent, "http://");
-	    			//$postContentHttps = findAllSubStrings($postContent, "https://");
-
-	    			//if($postContentHttp) {
-	    				//foreach ($postContentHttp as $pchttp) {
-	    					//echo $pchttp;
-	    					//echo "<br>";
-	    				//}
-	    			//}
-	    			//if($postContentHttps) {
-	    				//foreach ($postContentHttps as $pchttps) {
-	    					//echo $pchttps;
-	    					//echo "<br>";
-	    				//}
-	    			//}
-
 	    			$postTagString = "";							//initialize $postTagString
 	    			$postTags = getPostTags($postID); //get tags based on the post id
 	    			$postDateTimeArray = getPostDateTime($postID);	//get date and time
@@ -316,6 +299,9 @@ if ($devMode === TRUE) {
 	    			}
 
 	    			echo "<br>";
+
+	    			$postContent = autoFormatLinks($postContent);
+
 	    			echo "<div class='post-content'>" . $postContent . "</div><br>";
 	    			
 	    			echo "<div id='tag-bottom-menu'>";
@@ -385,7 +371,7 @@ if ($devMode === TRUE) {
 		</div>
 		<script>
 			addTagMenuHandlers();
-			addRowHandlers();
+			//addRowHandlers();
 			addNavMenuHandlers();
 		</script>
 		</body>
