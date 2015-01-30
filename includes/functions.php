@@ -354,21 +354,159 @@
         $s = 0;
         $i = 0;
     
-    while(is_integer($i)) {
+        while(is_integer($i)) {
  
-        $i = stripos($haystack, $needle, $s);
+            $i = stripos($haystack, $needle, $s);
  
-        if(is_integer($i)) {
-            $aStrPos[] = $i;
-            $s = $i + strlen($needle);
+            if(is_integer($i)) {
+                $aStrPos[] = $i;
+                $s = $i + strlen($needle);
+            }
+        }
+ 
+        if(isset($aStrPos)) {
+            return $aStrPos;
+        }
+        else {
+            return false;
         }
     }
- 
-    if(isset($aStrPos)) {
-        return $aStrPos;
-    } else {
-        return false;
+
+
+    function autoFormatLinks($postContent) {
+
+        //auto format links in posts, find "http://" and "https://" and return their start positions in arrays
+        $startHttp = findAllSubStrings($postContent, "http://");
+        $startHttps = findAllSubStrings($postContent, "https://");
+        
+        //make sure variables for http and https link positions are in one array
+        $linkPositions = array();
+
+        if ($startHttp) {
+            foreach ($startHttp as $sH) {
+                $linkPositions[] = $sH;
+            }
+        }
+
+        if ($startHttps) {
+            foreach ($startHttps as $sHs) {
+                $linkPositions[] = $sHs;
+            }
+        }
+
+        //if there are links in the content that were returned in $linkPositions, sort them ascendingly
+        //other wise return $postContent unchanged
+        if ($linkPositions) {
+            sort($linkPositions);
+        }
+        else {
+            return $postContent;
+        }
+            
+        //get the substring at each link position from starting position until end of $postContent, store in array
+        $preLinkStrings = array();
+        
+        foreach ($linkPositions as $lp) {
+            $preLinkString = substr($postContent, $lp);
+            $preLinkStrings[] = $preLinkString;
+        }
+
+        //extract link substring from each $preLinkString, store in new array
+        $linkStrings = array();
+        
+        foreach ($preLinkStrings as $pls) {
+
+            //TRUE means get everyghing before the character in quotes
+            $linkString = stristr($pls, " ", TRUE);
+
+            //if a space was found as the end of a link...
+            if ($linkString) {
+                
+                //make sure that space wasn't part of a '<br />' tag indicating a new line
+                if (strpos($linkString, '<br')) {
+                    
+                    //if the space was inside a '<br />' tag, remove the tag characters that were acquired before the space
+                    $linkString = rtrim($linkString, '<br');
+                }
+
+                //if the link was at the end of a sentence, check for and remove "."
+                if (substr($linkString, -1) === ".") {
+                    $linkString = rtrim($linkString, ".");
+                }
+                $linkStrings[] = $linkString;
+            }
+            else {
+                //if no spaces and no '<br />' tags were found, the entire string is a link and = $pls
+                $linkString = $pls;
+                if ($linkString) {
+                    if (substr($linkString, -1) === ".") {
+                        $linkString = rtrim($linkString, ".");
+                    }
+                    $linkStrings[] = $linkString;
+                }
+            }
+        }
+
+        //place all link parameters in a links array (position, the link itself, and its length)
+        $links = array();
+        for ($i = 0; $i < sizeof($linkStrings); $i++) {
+            $links[$i] = array('position' => $linkPositions[$i], 
+                                  'link' => $linkStrings[$i], 
+                                'length' => strlen($linkStrings[$i]));
+        }
+
+        //assemble array to merge link tags and post text together
+        $postContentArray = array();
+        
+        $startOpenLinkTag = "<a href='";
+        $finishOpenLinkTag = "' target='_blank'>";
+        $closeLinkTag = "</a>";
+        
+        $offset = 0;
+        $c = 0;
+        $linkCount = count($links);
+        $text = "";
+
+        foreach ($links as $link) {
+            $c += 1;
+
+            //capture text between links starting at $offset
+            //the next parameter is the number of characters which = (link position - $offset)
+            $text = substr($postContent, $offset, ($link['position'] - $offset));
+
+            //add any text at the start of the content
+            $postContentArray[] = $text;
+
+            //add open tag to array
+            $postContentArray[] = $startOpenLinkTag;
+            
+            //add link to tag
+            $postContentArray[] = $link['link'];
+            
+            //finish opening link tag
+            $postContentArray[] = $finishOpenLinkTag;
+            
+            //add link text
+            $postContentArray[] = $link['link'];
+            
+            //close link tag
+            $postContentArray[] = $closeLinkTag;
+
+            //$offset keeps growing as: $text length + $link length
+            $offset += (strlen($text) + $link['length']);
+
+            if ($c === $linkCount) {
+                $finishText = substr($postContent, $offset);
+                $postContentArray[] = $finishText;
+            }
+        }
+
+        $postContent = "";
+        foreach ($postContentArray as $pc) {
+            $postContent .= $pc;
+        }
+
+        return $postContent;
     }
-}
 
 ?>
