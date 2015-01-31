@@ -4,7 +4,7 @@ session_start();
 require("../includes/config.php");
 //require_once("donotupload.php");
 
-$devMode = TRUE;
+$devMode = FALSE;
 if ($devMode === TRUE) {
 	echo '<pre>';
 	echo "POST";
