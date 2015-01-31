@@ -85,6 +85,7 @@ if ($devMode === TRUE) {
 								//if delete is also set, then delete the post instead
 								if (isset($_POST["delete"])) {
 									delPost($postID);
+
 									//echo $postID;
 									//echo "blaaaaaaaaaaaa";
 								}
@@ -170,10 +171,12 @@ if ($devMode === TRUE) {
 				if (isset($_POST["pastebox"])) {
 					
 					if (isset($_POST["postID"])) {
-						$postID = $_POST["postID"];
-					}
-					else {
-						$postID = "none";
+						if (!isset($_POST["delete"])) {
+							$postID = $_POST["postID"];
+						}
+						else {
+							$postID = "none";
+						}
 					}
 
 					$newTagsString = "";
@@ -243,7 +246,7 @@ if ($devMode === TRUE) {
 	    		$_SESSION["tagName"] = $tagName;
 
 
-				//if we are editing and there is a postID set to be edited (makes sure we're not deleting instead)
+				//if we are editing and there is a postID set to be edited... (makes sure we're not deleting instead)
 				if (isset($_POST["postID"])) {
 					if (isset($_POST["edit"])) {
 						$postIDs[0] = $_POST["postID"];
@@ -258,7 +261,13 @@ if ($devMode === TRUE) {
 		    }
 	    	
   			if (!isset($postIDs)) {
-  				$postIDs[0] = $postID;
+  				if ((!isset($_POST['delete'])) || ($_POST['delete'] === FALSE)) {
+  					$postIDs[0] = $postID;
+  				}
+  				else {
+  					$postIDs = getPostIDs($tagName, $limit); 
+  				}
+  				
   			}
     		//loop through posts
 	    	if ($postIDs) {
