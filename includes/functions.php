@@ -509,4 +509,79 @@
         return $postContent;
     }
 
+    //auto format search terms in posts
+    function autoFormatTerms($postContent, $termString) {
+
+        //find terms and return starting positions in an array
+        $termPositions = array();
+        $termPositions[] = findAllSubStrings($postContent, $termString);
+
+        //if there are links in the content that were returned in $linkPositions, sort them ascendingly
+        //other wise return $postContent unchanged
+        if ($termPositions) {
+            sort($termPositions);
+        }
+        else {
+            return $postContent;
+        }
+
+        //place position and length parameters for all terms in one array
+        //$terms = array();
+        $termStringLength = strlen($termString);
+
+        //for ($i = 0; $i < sizeof($termPositions); $i++) {
+            //$terms[$i] = array('position' => $termPositions[$i],
+            //                       'term' => $termString, 
+            //                     'length' => $termStringLength);
+        //}
+
+        //assemble array to merge terms and post text together
+        $postContentArray = array();
+        $openSpanTag = "<span class='highlight'>";
+        $closeSpanTag = "</span>";
+        
+        $offset = 0;
+        $c = -1;
+        $termCount = count($termPositions) - 1;
+        $text = "";
+
+        foreach ($termPositions as $tp) {
+            $c += 1;
+
+            //capture text between terms starting at $offset
+            //the next parameter is the number of characters which = (term position - $offset)
+
+            //echo $postContent . $offset . $term['position'];
+            //echo $postContent . $offset;
+            $text = substr($postContent, $offset, ($tp[$c] - $offset));
+
+            //add any text at the start of the content
+            $postContentArray[] = $text;
+
+            //add open tag to array
+            $postContentArray[] = $openSpanTag;
+            
+            //add term to array
+            $postContentArray[] = $termString;
+            
+            //add close tag to array
+            $postContentArray[] = $closeSpanTag;
+
+            //$offset keeps growing as: $text length + $term length
+            $offset += (strlen($text) + $termStringLength);
+
+            if ($c === $termCount) {
+                $finishText = substr($postContent, $offset);
+                $postContentArray[] = $finishText;
+            }
+        }
+
+        $postContent = "";
+        foreach ($postContentArray as $pc) {
+            $postContent .= $pc;
+        }
+
+        return $postContent;
+    }
+
 ?>

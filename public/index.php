@@ -4,7 +4,7 @@ session_start();
 require("../includes/config.php");
 //require_once("donotupload.php");
 
-$devMode = FALSE;
+$devMode = TRUE;
 if ($devMode === TRUE) {
 	echo '<pre>';
 	echo "POST";
@@ -310,6 +310,9 @@ if ($devMode === TRUE) {
 	    			echo "<br>";
 
 	    			$postContent = autoFormatLinks($postContent);
+	    			//if (isset($_POST['find'])) {
+	    				//$postContent = autoFormatTerms($postContent, $termString);
+	    			//}
 
 	    			echo "<div class='post-content'>" . $postContent . "</div><br>";
 	    			
