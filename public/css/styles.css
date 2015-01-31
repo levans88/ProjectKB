@@ -373,3 +373,8 @@ header
     visibility: hidden;
 }
 
+
+.highlight
+{
+    background-color: yellow;
+}
