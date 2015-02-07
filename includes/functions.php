@@ -2,6 +2,45 @@
 
     require_once("constants.php");
 
+    function postHas($variable) {
+
+        if (isset($_POST[$variable])) {
+            
+            if ($_POST[$variable] == TRUE) {
+                
+                $value = $_POST[$variable];
+                
+                return $value;
+            }
+        }
+        else {
+            return FALSE;
+        }
+    }
+
+
+    function sessionHas($variable) {
+
+        if (isset($_SESSION[$variable])) {
+            
+            if ($_SESSION[$variable] == TRUE) {
+                
+                $value = $_SESSION[$variable];
+                
+                return $value;
+            }
+        }
+        else {
+            return FALSE;
+        }
+    }
+
+
+    function giveSession($variable, $value) {
+        $_SESSION[$variable] = $value;
+    }
+
+
     function connectdb() {
         $conn = mysqli_connect(SERVER, USERNAME, PASSWORD, DATABASE);
         if (!$conn) {
@@ -349,6 +388,11 @@
         }
     }
 
+    function redirect() {
+        header ('HTTP/1.1 303 See Other');
+        header ('Location: ./'); 
+    }
+
 
     function findAllSubStrings($haystack, $needle) {
         $s = 0;
@@ -583,5 +627,24 @@
 
         return $postContent;
     }
+
+
+    //function autoPostTitle ($postContent) {
+        
+        //if (strpos($postContent, '<br'))
+        ////get up to first 50 characters of first line of $postContent (unless '<br />' is encountered)
+        //$postTitleCut = substr($postContent, 0, 50);
+
+        //if first 50 characters contains http:// or https://
+        //if (stripos($postTitleCut, "http://") || stripos($postTitleCut, "https://")) {
+
+            ////start and end title before link, or if link is at the start, the title is the link
+            ////...find end of link...
+        //}
+        //else {
+            ////
+        //}
+
+    //}
 
 ?>
