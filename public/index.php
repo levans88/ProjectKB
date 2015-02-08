@@ -199,7 +199,8 @@ if (postHas("delete")) {
 	}
 }
 
-
+//adds database post numbers and displays $_POST and $_SESSION arrays,
+//will cause filter.php to be taller (no need to fix this)
 $devMode = FALSE;
 if ($devMode === TRUE) {
 	echo '<pre>';
@@ -218,19 +219,20 @@ if ($devMode === TRUE) {
 		<link rel="stylesheet" type="text/css" href="css/styles.css" />
 		<script type="text/javascript" src="js/scripts.js"></script>
 		<title>Lenny Evans</title>
+
 	</head>
 
 	<body>
 			<?php
 				require("header.php");
 				
-				//if logged in, require edit.php - otherwise just close header with
-				//"</header>" because edit.php is inside "<header>"
+				//if logged in, require edit.php - otherwise just close
+				//header div because edit.php is inside of it
 				if (sessionHas("loggedin")) {
 					require("edit.php");
 				}
 				else {
-					echo "</header>";
+					echo "</div>";	//close 'header'
 				}
 
 				require("filter.php");
@@ -238,8 +240,7 @@ if ($devMode === TRUE) {
 				require("show.php");
 		?>
 
-	</div>
-	</div>
+	</div>	<!-- close 'container' -->
 	<script>
 		addTagMenuHandlers();
 		//addRowHandlers();

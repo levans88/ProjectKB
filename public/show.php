@@ -38,15 +38,7 @@ else {
 	$postIDs = getPostIDs($tagName, $limit);
 }
 
-
-if (sessionHas("loggedin")) {
-	echo "<div id='post-container-tall'>";
-}
-else {
-	echo "<div id='post-container-short'>";
-}
-
-echo "<table name='post-table' id='post-table'>";
+echo "<div id='post-table'>";
 
 
 //loop through posts
@@ -73,8 +65,7 @@ if ($postIDs) {
 		}
 
 		//and now display everything
-		echo "<tr id='post-row'>";
-		echo "<td class='post-column-posts'>";
+		echo "<div class='post-row'>";
 		echo "<div class='post-date-time'>" . $postDate . "</div>";
 		//$postTitle = autoPostTitle($postContent);
 		//echo "<div class='post-title'>" . $postTitle . "</div>";
@@ -90,61 +81,60 @@ if ($postIDs) {
 		$postContent = autoFormatLinks($postContent);
 
 		echo "<div class='post-content'>" . $postContent . "</div><br>";
-		echo "<div style='float: left; padding: 8px;'></div>";
-		echo "<div id='tag-bottom-menu'>";
+
+		echo "<div class='tag-bottom-menu'>";
 		foreach ($postTags as $tagName) {
+
 			echo "<div class='tag-bottom'>";
-			echo "<form action='' method='post'>";
-			echo "<input type='submit' class='tag-bottom-submit' name='tagname_button' value='$tagName'>";
-			echo "<input type='hidden' name='tagname' value='$tagName'>";
-			echo "</form>";
+				echo "<form action='' method='post'>";
+					echo "<input type='submit' class='tag-bottom-submit' name='tagname_button' value='$tagName'>";
+					echo "<input type='hidden' name='tagname' value='$tagName'>";
+				echo "</form>";
 			echo "</div>";
 		}
 			echo "<div class='tag-bottom'>";
-			echo "<form action='' method='post'>";
-			echo "<input type='submit' style='font-style:normal; font-size:1.5em' class='tag-bottom-submit' value='*'>";
-			echo "<input type='hidden' name='tagname' value='none'>";
-			
-			echo "</form>";
-			echo "</div>";
-		echo "</div>";
+				echo "<form action='' method='post'>";
+					echo "<input type='submit' class='tag-bottom-submit' style='font-size:1.5em; vertical-align: middle;' value='*'>";
+					echo "<input type='hidden' name='tagname' value='none'>";
+				echo "</form>";
+			echo "</div>";	//close 'tag-bottom'
+		echo "</div>";	//close 'tag-bottom-menu'
 
-		echo "<div class='post-edit-delete'>";
+		
 		
 		if (sessionHas("loggedin")) {
-			
-			echo "<div id='edit'>";
-				echo "<form action='' method='post'>";
-				echo "<input type='submit' class='edit' name='edit_button' value='Edit'>";
-				
-				//provides hidden $postID value to pass to $_POST
-				echo "<input type='hidden' name='postid' value='$postID'>";
-				echo "<input type='hidden' name='edit' value='TRUE'>";
-				echo "</form>";
+		echo "<div class='post-edit-delete'>";	
+				echo "<div id='edit'>";
+					echo "<form action='' method='post'>";
+					echo "<input type='submit' class='edit' name='edit_button' value='Edit'>";
+					
+					//provides hidden $postID value to pass to $_POST
+					echo "<input type='hidden' name='postid' value='$postID'>";
+					echo "<input type='hidden' name='edit' value='TRUE'>";
+					echo "</form>";
 				echo "</div>";
 
 				echo "<div id='delete'>";
-				echo "<form action='' method='post'>";
-				echo "<input type='submit' class='delete' name='delete_button' value='Delete'>";
+					echo "<form action='' method='post'>";
+					echo "<input type='submit' class='edit' name='delete_button' value='Delete'>";
 
-				//provides hidden $postID value to pass to $_POST
-				echo "<input type='hidden' name='postid' value='$postID'>";
-				echo "<input type='hidden' name='delete' value='TRUE'>";
-				//echo "<input type='hidden' name='limit' value='$limit'>";
-				echo "</form>";
+					//provides hidden $postID value to pass to $_POST
+					echo "<input type='hidden' name='postid' value='$postID'>";
+					echo "<input type='hidden' name='delete' value='TRUE'>";
+
+					echo "</form>";
 				echo "</div>";
-			echo "</div>";
-		}
-		else {
-			echo "<br>";
+		echo "</div>";	//close 'post-edit-delete'
 		}
 		
-		echo "</td>";
-		echo "</tr>";  
+		echo "</div>";	//close 'post-row'
+ 
 	}
 }
 else {
+	//if no results were returned...
 	echo "<br><div style='padding-left: 35px; padding-bottom: 15px; font-size: 14px;'>No data available.</div>";
 }
-echo "</table>";
+echo "</div>";	//close 'post-table'
+
 ?>

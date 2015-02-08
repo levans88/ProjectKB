@@ -14,7 +14,7 @@ $tagsArray = array();
 
 //if session has "update" or "insert" there will be a write to the database
 if ((sessionHas("update") || sessionHas("insert")) && !sessionHas("error")) {
-    
+
     //operation will be an update using specific $postID
     if (sessionHas("update")){
         $postID = sessionHas("postid");
