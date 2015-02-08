@@ -70,21 +70,17 @@ else {
 			echo "</div>";
 		echo "<input type='submit' name='post' value='$buttonValue'/>";
 
-		if (sessionHas("edit")) {
-			echo "&nbsp&nbsp";
-			echo "<input type='submit' name='cancel_button' value='Cancel'>";
-			echo "<input type='hidden' name='cancel' value='TRUE'>";
-		}
-
 		//if we're already editing...
 		if (sessionHas("edit")) {
-			
+			echo "&nbsp&nbsp";
+			echo "<input type='submit' name='cancel' value='Cancel'>";
+			//echo "<input type='hidden' name='cancel' value='TRUE'>";
+
 			//resubmit "postid" so $_POST will still have it
 			echo "<input type='hidden' name='postid' value='$postID'>";
 
 			//only submits "update" to $_POST if "edit" was previously true
 			echo "<input type='hidden' name='update' value='TRUE'>";
-
 			echo "</form>";  //close main form here if editing
 		}
 		else {
@@ -100,8 +96,8 @@ else {
 		//postcontent, tag_boxes, and newtags will be sent from the form regardless
 
 
-	echo "</div>";
-
-echo "</header>";
+	echo "</div>";	//close form-container
+	echo "</div>";	//close 'header'
+//echo "</header>";
 
 ?>
