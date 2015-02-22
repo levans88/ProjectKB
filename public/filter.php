@@ -2,7 +2,8 @@
 
 //**************Form for searching posts and filtering results****************** 
 //******************************************************************************
-	
+
+
 	//variables
 	$searchTerm = "";
 

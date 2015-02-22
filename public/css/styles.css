@@ -130,11 +130,12 @@ body
 .post-row
 {
     clear: both;
+    overflow: hidden;
     border-bottom: #eee solid 1px;
     padding-left: 0px;
     padding-right: 0px;
     padding-top: 7px;
-    padding-bottom: 37px;
+    padding-bottom: 20px;
     width: 100%
 }
 
@@ -178,6 +179,7 @@ body
     padding-right: 10px;
     background-color: none;
     cursor: pointer;
+    padding-top: 10px;
 }
 
 

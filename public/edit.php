@@ -6,22 +6,35 @@
 
 //variables									
 $postTagsArray = array();
+$menuTagsArray = array();
 $postID = "";
 $postContent = "";
 
 
 if (sessionHas("edit")) {
 
-	//limit will be "1" if $_SESSION has "edit",
+	//$limit will be retrieved as "1" if $_SESSION has "edit",
 	//this is only the number of results to pull from database,
 	//not the number to display, that is set in show.php
 	$limit = sessionHas("limit");
 	
 	$postID = sessionHas("postid");
 
-	$postContent = getPostContent($postID, $limit);
-	$postContent = $postContent[0];
-	$postTagsArray = getPostTags($postID);
+	//get the post's data (it's a single post, no need for foreach)
+	$data = getPosts($postID, "none", $limit);
+	$post = $data[0];
+	$postContent = $post[1];
+
+	//get the post's tags
+	$postTagsString = $post[3];
+
+	//if there were no tags then provide empty string
+	if (!($postTagsString)) {
+		$postTagsString = "";
+	}
+
+	//convert $postTagsString to an array
+	$postTagsArray = explode(",", $postTagsString);
 
 	$buttonValue = "Update";
 }
@@ -39,30 +52,37 @@ else {
 		  echo "<div id='tag-table'>";
 			echo "<ul id='tag-list'>";
 
+				//get tags and categories, populate the editing menu
 				$cats = getCats();
-				foreach ($cats as $cat) {
-					$tags = getTags($cat, "array");
-					echo "<li>";
+				if ($cats) {
+					foreach ($cats as $cat) {
 
-					foreach($tags as $tag) {
-						
-						if (in_array($tag, $postTagsArray)) {
-							$status = 'selected';
-						}
-						else {
-							$status = 'notselected';
+						//echo $cat[0];
+						$menuTagsArray = explode(",", $cat[1]);
+						echo "<li>";
+
+						foreach($menuTagsArray as $tag) {
+							
+							if (in_array($tag, $postTagsArray)) {
+								$status = 'selected';
+							}
+							else {
+								$status = 'notselected';
+							}
+
+							if ($status == 'selected') {
+								$checked = 'checked';
+							}
+							else {
+								$checked = "";
+							}
+							echo "<div><input type='checkbox' class='tag-checkbox' name='tag_boxes[]' id='$tag' value='$tag' $checked>";
+							echo "<label class='$status' for='$tag'>" . $tag . "</label>" . "</div></li>";
 						}
 
-						if ($status == 'selected') {
-							$checked = 'checked';
-						}
-						else {
-							$checked = "";
-						}
-						echo "<div><input type='checkbox' class='tag-checkbox' name='tag_boxes[]' id='$tag' value='$tag' $checked>";
-						echo "<label class='$status' for='$tag'>" . $tag . "</label>" . "</div></li>";
 					}
 				}
+
 				echo "<div style='display: inline-block;'>";
 				echo "<div class='new-tags'>new:</div>&nbsp&nbsp<input type='text' class='transparent-textbox' placeholder='ex: tag1;tag2' name='newtags' size='10'>";
 				echo "</div>";

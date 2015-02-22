@@ -7,7 +7,7 @@
 //variables
 $limit = 0;
 $tagName = "";
-$postIDs = array();
+//$postIDs = array();
 
 //if not editing then get "limit" from $_SESSION
 if (!sessionHas("edit")) {
@@ -15,10 +15,12 @@ if (!sessionHas("edit")) {
 		$limit = sessionHas("limit");
 	}
 }
+
 //if we are editing, override $limit to 1 but don't change $_SESSION
 else {
 	$limit = 1;
 }
+
 
 if (sessionHas("tagname")) {
 	$tagName = sessionHas("tagname");
@@ -27,52 +29,61 @@ else {
 	$tagName = "none";
 }
 
+
 if (sessionHas("searchterm")) {
 	$searchTerm = sessionHas("searchterm");
-	$postIDs = find($searchTerm, $limit);
+	$data = find($searchTerm, $limit);
 }
 elseif (sessionHas("edit")) {
-	$postIDs[0] = sessionHas("postid");
+	$data = getPosts(sessionHas("postid"), "none", $limit);
 }
 else {
-	$postIDs = getPostIDs($tagName, $limit);
+	$data = getPosts("any", $tagName, $limit);
 }
 
 echo "<div id='post-table'>";
 
 
 //loop through posts
-if ($postIDs) {
-	foreach ($postIDs as $postID) {
-		$postContent = getPostContent($postID, $limit);
-		$postContent = nl2br($postContent[0]);	//then replace new lines with breaks
+if ($data) {
+	foreach ($data as $post) {
 
-		$postTagString = "";							//initialize $postTagString
-		$postTags = getPostTags($postID); //get tags based on the post id
-		$postDateTimeArray = getPostDateTime($postID);	//get date and time
-		$postDateTime = $postDateTimeArray[0];
+		$postID = $post[0];
+
+		//get the post's content and convert new lines to line breaks
+		$postContent = nl2br($post[1]);	
 		
-		//remove time
+		//get the post's tags
+		$postTagsString = $post[3];
+
+		//if there were no tags then provide empty string
+		if (!($postTagsString)) {
+			$postTagsString = "";
+		}
+
+		//convert $postTagsString to an array
+		$postTags = explode(",", $postTagsString);
+
+		//get the post's date/time
+		$postDateTime = $post[2];
+		
+		//remove time from post's date/time and format the date
 		$postDateArray = explode(' ', $postDateTime);
 		$postDate = $postDateArray[0];
-
-		//format date
 		$postDateParts = explode('-', $postDate);
 		$postDate = $postDateParts[1] . "-" . $postDateParts[2] . "-" . $postDateParts[0];
-
-		if (!($postTags)) {				//if there were no tags
-			$postTagString = "";		//then provide empty string
-		}
 
 		//and now display everything
 		echo "<div class='post-row'>";
 		echo "<div class='post-date-time'>" . $postDate . "</div>";
+		
+		//***keep*** - not currently implemented
 		//$postTitle = autoPostTitle($postContent);
 		//echo "<div class='post-title'>" . $postTitle . "</div>";
 
 		if ($devMode) {
 			echo "<div style='float: right;'>";
-			echo $postID;
+			echo $post[0];
 			echo "</div>";
 		}
 
@@ -94,7 +105,7 @@ if ($postIDs) {
 		}
 			echo "<div class='tag-bottom'>";
 				echo "<form action='' method='post'>";
-					echo "<input type='submit' class='tag-bottom-submit' style='font-size:1.5em; vertical-align: middle;' value='*'>";
+					echo "<input type='submit' class='tag-bottom-submit' value='*'>";
 					echo "<input type='hidden' name='tagname' value='none'>";
 				echo "</form>";
 			echo "</div>";	//close 'tag-bottom'
