@@ -1,7 +1,8 @@
 <?php
 
-//**************Setup the header layout, nav menu, and login form*************** 
+//**************Setup the header layout, nav menu, and login form***************
 //******************************************************************************
+
 
 ?>
 

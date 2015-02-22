@@ -1,4 +1,9 @@
 <?php
+
+//**************Control session/post variables and load resources**************
+//*****************************************************************************
+
+
 session_start();
 
 require("../includes/config.php");

@@ -29,37 +29,33 @@ if ((sessionHas("update") || sessionHas("insert")) && !sessionHas("error")) {
 
     if (sessionHas("tag_boxes")) {
         $tagsArray = sessionHas("tag_boxes");
-        foreach($tagsArray as $selected) {
-            
-            //put selected tags into an array
-            $tagsArray[] = $selected;
-        }
     }
 
+    //get any new tags that were entered
     if (sessionHas("newtags")) {
         $newTagsString = sessionHas("newtags");
-        $newTagsString = rtrim($newTagsString, '; ');
-        $newTagsArray = explode(';', $newTagsString);
 
+        $newTagsArray = array();
+        $newTagsArray = newTags($newTagsString);
+
+        //combine new tags with existing selected tags
         foreach($newTagsArray as $nt) {
-            
-            //combine new tags with existing selected tags
             $tagsArray[] = $nt;
         }
     }
-    else {
-        $newTagsString = "none";
-    }
 
+    //add new tags to the database if there were any
+    newTags($newTagsArray);
+
+    //get current date and time
     $postDateTime = date("Y-m-d H:i:s");
-    $lastID = setPostContent($postID, $postContent, $postDateTime);
-    newTags($newTagsString);
-    setPostTags($postID, $tagsArray, $lastID);
+    
+    //write post as insert or update
+    setPost($postID, $postContent, $postDateTime, $tagsArray);
 
     //clear "update" and "insert" from $_SESSION
     giveSession("update", FALSE);
     giveSession("insert", FALSE);
-    //giveSession("limit", FALSE);
 }
 
 ?>
