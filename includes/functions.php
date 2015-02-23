@@ -6,14 +6,11 @@
 
     require_once("constants.php");
 
+    //helper function to check for and retrieve $_POST variables
     function postHas($variable) {
-
         if (isset($_POST[$variable])) {
-            
             if ($_POST[$variable] == TRUE) {
-                
                 $value = $_POST[$variable];
-                
                 return $value;
             }
         }
@@ -23,14 +20,11 @@
     }
 
 
+    //helper function to check for and retrieve $_SESSION variables
     function sessionHas($variable) {
-
         if (isset($_SESSION[$variable])) {
-            
             if ($_SESSION[$variable] == TRUE) {
-                
                 $value = $_SESSION[$variable];
-                
                 return $value;
             }
         }
@@ -40,20 +34,42 @@
     }
 
 
+    //helper function to put variables and values in $_SESSION
     function giveSession($variable, $value) {
         $_SESSION[$variable] = $value;
     }
 
 
-    function query($type, $query, $field, $value, $tagString, $table, $catID, $limit, $progQuery) {
-        $conn = mysqli_connect(SERVER, USERNAME, PASSWORD, DATABASE);
+    //map the arguments array to individual function arguments for use in query() function
+    function getArgs($arg, $arguments) {
+        if (isset($arguments[$arg])) {
+            $a = $arguments[$arg];
+            return $a;
+        }
+    }
 
+    //function query($type, $query, $field, $value, $tagString, $table, $catID, $limit, $progQuery) {
+    function query($arguments) {
+
+        //create database connection
+        $conn = mysqli_connect(SERVER, USERNAME, PASSWORD, DATABASE);
+        
         if (!$conn) {
             echo "Failed to connect to database.";
             return;
         }
+        
+        //map arguments from array to individual variables
+        $type = getArgs("type", $arguments);
+        $query = getArgs("query", $arguments);
+        $value0 = getArgs("value0", $arguments);
+        $value1 = getArgs("value1", $arguments);
+        $value2 = getArgs("value2", $arguments);
+        $limit = getArgs("limit", $arguments);
+        $progQuery = getArgs("progQuery", $arguments);
 
-        //query type is "select"
+
+        //define query types ($select, $insert, $update, $delete)
         $select = array(
                 
                 array(
@@ -89,7 +105,7 @@
                                 LIMIT ?",
 
                     "paramTypes" => "ii",
-                        "params" => array($value, $limit)
+                        "params" => array($value0, $limit)
                 ),
                 array(
                     //get posts that have a specific tag
@@ -104,21 +120,21 @@
                                 LIMIT ?",
 
                     "paramTypes" => "si",
-                        "params" => array($value, $limit)
+                        "params" => array($value0, $limit)
                 ),
                 array(
                     //see if specific post exists by postid
                     "query" => "SELECT postid FROM posts WHERE postid = ?",
 
                     "paramTypes" => "i",
-                        "params" => $value
+                        "params" => $value0
                 ),
                 array(
                     //verify hash in users table (for logging in)
                     "query" => "SELECT hash FROM users WHERE username = ?",
 
                     "paramTypes" => "s",
-                        "params" => $value
+                        "params" => $value0
                 )
         );
 
@@ -127,26 +143,30 @@
                 array(
                     //insert new tags
                     "query" => "INSERT INTO tags (catid, tagname) VALUES ('9', ?)",
+
                     "paramTypes" => "s",
-                        "params" => $value
+                        "params" => $value0
                     ),
                 array(
                     //insert postid and tagid into posts_tags table
                     "query" => "INSERT INTO posts_tags (posts_postid, tags_tagid) VALUES (?, ?)",
+
                     "paramTypes" => "ii",
-                        "params" => array($field, $value) //****TEMP DIRTY HACK! REPLACE $field !!!****
+                        "params" => array($value1, $value0)
                     ),
                 array(
                     //insert new post into posts table (insert $postContent and $postDateTime)
                     "query" => "INSERT INTO posts (postcontent, postdatetime) VALUES (?, ?)",
+
                     "paramTypes" => "ss",
-                        "params" => array($field, $value) //****TEMP DIRTY HACK! REPLACE $field !!!****
+                        "params" => array($value1, $value0)
                     ),
                 array(
                     //insert $username and $hash into users table (create new user)
                     "query" => "INSERT INTO users (username, hash) VALUES (?, ?)",
+
                     "paramTypes" => "ss",
-                        "params" => array($field, $value) //****TEMP DIRTY HACK! REPLACE $field !!!****
+                        "params" => array($value1, $value0)
                     )
         );
 
@@ -155,8 +175,9 @@
                 array(
                     //update posts table - $postContent, $postDateTime, $postID
                     "query" => "UPDATE posts SET postcontent = ?, postdatetime = ? WHERE postid = ?",
+
                     "paramTypes" => "ssi",
-                        "params" => array($field, $value, $table)   //****TEMP DIRTY HACK! REPLACE $field **AND** $table !!!****
+                        "params" => array($value1, $value0, $value2)
                     )
         );
 
@@ -165,14 +186,16 @@
                 array(
                     //delete a post from posts_tags
                     "query" => "DELETE FROM posts_tags WHERE posts_postid = ?",
+
                     "paramTypes" => "i",
-                        "params" => $value
+                        "params" => $value0
                     ),
                 array(
                     //delete a post from posts
                     "query" => "DELETE FROM posts WHERE postid = ?",
+
                     "paramTypes" => "i",
-                        "params" => $value
+                        "params" => $value0
                     )
         );
 
@@ -199,7 +222,7 @@
         }
 
 
-        //subtype - //****TEMP DIRTY HACK! DO NOT USE $query FIELD FOR THIS !!!****
+        //subtype (uses "query" field)
         $subType = "";
         if ($query === "select") {
             $subType = "select";
@@ -277,7 +300,13 @@
 
     //get all categories and tags
     function getCats() {
-        $data = query("select", 0, "none", "none", "none", "none", "none", "none", "none");
+
+        $arguments = array(
+            "type" => "select", 
+            "query" => 0
+        );
+
+        $data = query($arguments);
 
         if ($data) {
             return $data;
@@ -286,32 +315,51 @@
 
 
     function getPosts($postID, $tagName, $limit) {
-        
-        $data = array();
-        
+
+        $arguments = array();
+
         //if $postID is a specific ID it will be numeric, if it is "any" as a parameter it will not be
         if (is_numeric($postID)) {
 
             //get all data for a *specific* post
-            $data = query("select", 2, "none", $postID, "none", "none", "none", 1, "none");
+            $arguments = array(
+                "type" => "select", 
+                "query" => 2, 
+                "value0" => $postID, 
+                "limit" => 1
+            );
+
+            $data = query($arguments);
         }
         else if ($postID == "any") {
 
             if ($tagName === "none") {
-                
+
                 //get all data for any posts up to $limit
-                $data = query("select", 1, "none", "none", "none", "none", "none", $limit, "none");
+                $arguments = array(
+                    "type" => "select",
+                    "query" => 1,
+                    "limit" => $limit
+                );
+
+                $data = query($arguments);
             }
             else {
                 //if there is a tag name specified, get posts with that tag only
-                $data = query("select", 3, "none", $tagName, "none", "none", "none", $limit, "none");
+                $arguments = array(
+
+                    "type" => "select",
+                    "query" => 3,
+                    "value0" => $tagName,
+                    "limit" => $limit
+                );
+
+                $data = query($arguments);
             }
 
         }
         
         return $data;
-
-
     }
 
 
@@ -320,17 +368,40 @@
         $lastID = "none";
 
         if ($postID !== "none") {
+
             //make sure postid exists before attempting update
-            $postExist = query("select", 4, "none", $postID, "none", "none", "none", "none", "none");
+            $arguments = array(
+                "type" => "select", 
+                "query" => 4, 
+                "value0" => $postID
+            );
+
+            $postExist = query($arguments);
 
             //if post exists then update it
             if ($postExist) {
-                query("update", 0, $postContent, $postDateTime, "none", $postID, "none", "none", "none");
+
+                $arguments = array(
+                    "type" => "update", 
+                    "query" => 0, 
+                    "value0" => $postDateTime, 
+                    "value1" => $postContent, 
+                    "value2" => $postID
+                );
+
+                query($arguments);
             }
         }
         else {
             //post does not exist, so insert it and note last updated postid
-            $lastID = query("insert", 2, $postContent, $postDateTime, "none", "none", "none", "none", "none");
+            $arguments = array(
+                "type" => "insert", 
+                "query" => 2, 
+                "value0" => $postDateTime,
+                "value1" => $postContent
+            );
+            
+            $lastID = query($arguments);
         }
 
         //set tags for post including any new ones
@@ -341,26 +412,32 @@
     function newTags($newTags) {
         if (is_string($newTags)) {
 
-                //remove spaces
-                $newTags = str_replace(' ', '', $newTags);
+            //remove spaces
+            $newTags = str_replace(' ', '', $newTags);
 
-                //remove trailing semi-colon if it exists
-                $newTags = rtrim($newTags, ';');
+            //remove trailing semi-colon if it exists
+            $newTags = rtrim($newTags, ';');
 
-                //convert to lowercase
-                $newTags = strtolower($newTags);
+            //convert to lowercase
+            $newTags = strtolower($newTags);
 
-                //
-                giveSession("newTagsString", $newTags);
+            //convert new tags to an array
+            $newTagsArray = explode(';', $newTags);
 
-                //convert new tags to an array
-                $newTagsArray = explode(';', $newTags);
-
-                return $newTagsArray;
+            return $newTagsArray;
         }   
+        //add new tags to database
         elseif (is_array($newTags)) {
+            
             foreach($newTags as $tagName) {
-                query("insert", 0, "none", $tagName, "none", "none", "none", "none", "none");
+
+                $arguments = array(
+                    "type" => "insert",
+                    "query" => 0,
+                    "value0" => $tagName
+                );
+
+                query($arguments);
             }
         }
     }
@@ -389,21 +466,56 @@
         $getTagIDsQuery = "SELECT tagid FROM tags WHERE tagname IN ($tagString)";
 
         $subType = "select";
-        $tagIDs = query("prog", $subType, "none", "none", "none", "none", "none", "none", $getTagIDsQuery);
-        
+
+        $arguments = array(
+            "type" => "prog",
+            "query" => $subType,
+            "progQuery" => $getTagIDsQuery
+        );
+
+        $tagIDs = query($arguments);
+
         //delete existing entries in posts_tags for postid (delete tags)
-        query("delete", 0, "none", $postID, "none", "none", "none", "none", "none");
+        $arguments = array(
+            "type" => "delete",
+            "query" => 0,
+            "value0" => $postID
+        );
+
+        query($arguments);
 
         //write replacement postid's and tagid's to posts_tags (write replacement tags)
         foreach ($tagIDs as $tagID) {
-            query("insert", 1, $postID, $tagID[0], "none", "none", "none", "none", "none");
+
+            $arguments = array(
+                "type" => "insert",
+                "query" => 1,
+                "value0" => $tagID[0],
+                "value1" => $postID
+            );
+
+            query($arguments);
         }
     }
 
-
+    //delete posts
     function delPost ($postID) {
-        query("delete", 0, "none", $postID, "none", "none", "none", "none", "none");
-        query("delete", 1, "none", $postID, "none", "none", "none", "none", "none");
+        
+        $arguments = array(
+            "type" => "delete",
+            "query" => 0,
+            "value0" => $postID
+        );
+
+        query($arguments);
+
+        $arguments = array(
+            "type" => "delete",
+            "query" => 1,
+            "value0" => $postID
+        );
+
+        query($arguments);
     }
 
 
@@ -455,8 +567,15 @@
 
         //run the find query, get resulting post id's
         $subType = "select";
-        $postIDs = query("prog", $subType, "none", "none", "none", "none", "none", $limit, $findQuery);
 
+        $arguments = array(
+            "type" => "prog",
+            "query" => $subType,
+            "limit" => $limit,
+            "progQuery" => $findQuery
+        );
+
+        $postIDs = query($arguments);
 
         if ($postIDs) {
             //build a list of post id's to query for, will look like: '412','534','302'
@@ -479,7 +598,15 @@
 
             //finally get post data for the post id's that the find query retrieved earlier
             $subType = "select";
-            $data = query("prog", $subType, "none", "none", "none", "none", "none", $limit, $findQuerySecondPass);
+
+            $arguments = array(
+                "type" => "prog",
+                "query" => $subType,
+                "limit" => $limit,
+                "progQuery" => $findQuerySecondPass
+            );
+
+            $data = query($arguments);
 
             return $data;
         }
@@ -497,7 +624,14 @@
     function authenticate($username, $password) {
         
         //if hashing the password with its hash as the salt returns the same hash...
-        $hashAsSalt = query("select", 5, "none", $username, "none", "none", "none", "none", "none");
+
+        $arguments = array(
+            "type" => "select", 
+            "query" => 5, 
+            "value0" => $username
+        );
+
+        $hashAsSalt = query($arguments);
         $hashAsSalt = $hashAsSalt[0][0];
         $hash = crypt($password, $hashAsSalt);
 
@@ -515,6 +649,8 @@
     }
 
 
+    //helper function to find all instances of specified substrings,
+    //used by autoFormatLinks()
     function findAllSubStrings($haystack, $needle) {
         $s = 0;
         $i = 0;
@@ -538,9 +674,10 @@
     }
 
 
+    //find and format URL's in post contents
     function autoFormatLinks($postContent) {
 
-        //auto format links in posts, find "http://" and "https://" and return their start positions in arrays
+        //find "http://" and "https://" and return their start positions in arrays
         $startHttp = findAllSubStrings($postContent, "http://");
         $startHttps = findAllSubStrings($postContent, "https://");
         

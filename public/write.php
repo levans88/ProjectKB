@@ -56,6 +56,7 @@ if ((sessionHas("update") || sessionHas("insert")) && !sessionHas("error")) {
     //clear "update" and "insert" from $_SESSION
     giveSession("update", FALSE);
     giveSession("insert", FALSE);
+    giveSession("newtags", FALSE);
 }
 
 ?>
