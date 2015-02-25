@@ -1,7 +1,7 @@
 <?php
 
-//*********************Manage helper functions and all database code**********************
-//****************************************************************************************
+//*********************Manage helper functions and all database code*********************
+//***************************************************************************************
 
 
     require_once("constants.php");
@@ -48,7 +48,7 @@
         }
     }
 
-    //function query($type, $query, $field, $value, $tagString, $table, $catID, $limit, $progQuery) {
+    //main database read-write-connection code
     function query($arguments) {
 
         //create database connection

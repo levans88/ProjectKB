@@ -1,4 +1,5 @@
 
+
 function addTagMenuHandlers() {
     var tagList = document.getElementById("tag-list");
     if (!tagList) {
