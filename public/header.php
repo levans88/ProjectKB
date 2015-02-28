@@ -41,7 +41,7 @@
 			 </div><!--
 		
 		--><div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
-					<a style='color: inherit;' href='http://modofthemoment.blogspot.com/' target='_blank'>Blog</a>
+					<a style='color: inherit;' href='http://blog.lennyevans.net/' target='_blank'>Blog</a>
 			 </div><!--
 		
 		--><div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
@@ -53,7 +53,7 @@
 			 </div><!--
 		
 		--><div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
-			  	<a style='color: inherit;' href='' target='_blank'>Twitter</a>
+			  	<a style='color: inherit;' href='http://www.twitter.com/lennyevans88' target='_blank'>Twitter</a>
 			 </div><!--
 
 		--><!--<div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
