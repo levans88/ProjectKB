@@ -718,17 +718,18 @@
         
         foreach ($preLinkStrings as $pls) {
 
-            //TRUE means get everyghing before the character in quotes
+            //TRUE means get everything before the character in quotes
             $linkString = stristr($pls, " ", TRUE);
-
+            
             //if a space was found as the end of a link...
             if ($linkString) {
                 
                 //make sure that space wasn't part of a '<br />' tag indicating a new line
                 if (strpos($linkString, '<br')) {
                     
-                    //if the space was inside a '<br />' tag, remove the tag characters that were acquired before the space
-                    $linkString = rtrim($linkString, '<br');
+                    //if the space was inside a '<br />' tag, remove the tag characters that were acquired before the space,
+                    //there are three of them as "<br"
+                    $linkString = substr($linkString, 0, (strlen($linkString) - 3));
                 }
 
                 //if the link was at the end of a sentence, check for and remove "."
