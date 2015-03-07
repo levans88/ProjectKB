@@ -1,5 +1,4 @@
 
-
 function addTagMenuHandlers() {
     var tagList = document.getElementById("tag-list");
     if (!tagList) {
@@ -31,7 +30,21 @@ function addTagMenuHandlers() {
 }
 
 
-function addNavMenuHandlers() {
+function selectLimit(limit)
+{    
+    var selectBox = document.getElementById('limit');
+    selectBox.value = limit;
+}
+
+
+function setFind(termString)
+{
+    var findBox = document.getElementById('find');
+    findBox.value = termString;
+}
+
+/* KEEP */
+/*function addNavMenuHandlers() {
     var navMenu = document.getElementById('nav-menu');
     var navItems = navMenu.getElementsByTagName("div");
     
@@ -57,18 +70,41 @@ function addNavMenuHandlers() {
         currentNavItem.onmouseover = createHoverHandler(currentNavItem);
         currentNavItem.onmouseout = createLeaveHandler(currentNavItem);
     }
-}
+}*/
 
 
-function selectLimit(limit)
-{    
-    var selectBox = document.getElementById('limit');
-    selectBox.value = limit;
-}
-
-
-function setFind(termString)
+/* KEEP */
+/*function changeImage()
 {
-    var findBox = document.getElementById('find');
-    findBox.value = termString;
+    var h = document.getElementById("header");
+    h.backgroundImage = "url('../img/BooksPhoto.png')";
+    x++;
+
+    if(x >= images.length){
+        x = 0;
+    } 
+
+    fadeImg(h.backgroundImage, 100, true);
+    //setTimeout("changeImage()", 6000);
 }
+
+function fadeImg(el, val, fade){
+    if(fade === true){
+        val--;
+    }else{
+        val ++;
+    }
+
+    if(val > 0 && val < 100){
+        el.style.opacity = val / 100;
+        setTimeout(function(){fadeImg(el, val, fade);}, 10);
+    }
+}
+
+var images = [],
+x = 0;
+
+images[0] = "../img/BooksPhoto.png";
+images[1] = "../img/Watermelon.png";*/
+//images[2] = "image3.jpg";
+//setTimeout("changeImage()", 6000);*/

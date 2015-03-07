@@ -8,9 +8,6 @@ li
 body
 {
     font-family: sans-serif;
-    background-image: linear-gradient(to bottom, #315481, #918E82 100%); /* IE11 */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#315481', endColorstr='#918E82',GradientType=0 ); /* IE6-9 */
-    background: -webkit-linear-gradient(#315481, #918E82); /* Webkit */
     background-attachment: fixed;
     top: 0;
     bottom: 0;
@@ -22,6 +19,70 @@ body
     padding-bottom: 30px;
     margin: 0;
 }
+
+
+select
+{
+    font-size: 14px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+
+input[type="submit"]
+{
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+
+input[type="text"]
+{
+    font-family: sans-serif;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+
+input[type="password"]
+{
+    font-size: 14px;
+    font-family: sans-serif;
+}
+
+
+.button
+{
+    background-color: #D63333;
+    font-weight: bold;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin: 5px;
+    width: 60px;
+    height: 30px;
+    background: rgba(214,51,51,1);
+}
+
+
+.button:hover
+{
+    background: rgba(224,61,61,1);
+}
+
+
+#reset_button
+{
+    margin-left: 5px;
+}
+
+
+#search_button
+{
+    margin-left: 20px;
+}
+
 
 .container
 {
@@ -35,12 +96,143 @@ body
 
 #header
 {
-    background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%); /* IE11 */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d0edf5', endColorstr='#e1e5f0',GradientType=0 ); /* IE6-9 */
-    background: -webkit-linear-gradient(#d0edf5, #e1e5f0); /* Webkit */
+    background-color: black;
+    background-image: url("/img/DarkWood.jpg");
     min-height: 110px;
     width: 100%;
-    padding-bottom: 1px;
+}
+
+
+#left-side
+{
+    float: left;
+    padding-left: 25px;
+    padding-top: 28px;
+    padding-bottom: 0px;
+}
+
+
+#title-name
+{
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+
+#title-desc
+{
+    padding-left: 10px;
+    padding-top: 2px;
+    font-family: Georgia, Times, 'Times New Roman', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: white;
+}
+
+
+#right-side
+{
+    clear: both;
+    float: right;
+    padding-right: 15px;
+    padding-right: 25px;
+    padding-bottom: 0px;
+    margin-top: 55px;
+    margin-bottom: 0px;
+}
+
+
+#nav-menu
+{
+    float: left;
+    margin-top: 31px;
+    margin-right: 15px;
+    font-weight: bold;
+    color: white;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+
+.nav-menu-item
+{
+    display: inline-block;
+    padding: 10px;
+    font-size: 14px;
+    color: white;
+    text-decoration: none;
+    background: none;
+    border: none;
+}
+
+
+.nav-menu-item:hover
+{
+    color: #D63333;
+    background: rgba(0,0,0,.30);
+}
+
+
+#logo-container
+{
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 25px;
+    vertical-align: top;
+}
+
+
+#logo-image
+{
+    border-radius: 50%;
+    border: 1px solid gray;
+}
+
+
+#login-menu
+{
+    display: inline-block;
+    margin-top: -5px;
+    padding-bottom: 0px;
+}
+
+
+#logout-menu
+{
+    float: right;
+    margin-right: 4px;
+}
+
+
+#filter
+{
+    display: inline-block;
+    clear: both;
+    width: 100%;
+    margin-top: 0px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    border-top: 0px solid white;
+}
+
+
+.label
+{
+    margin-left: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    -webkit-text-size-adjust: none;
+    color: white;
+}
+
+
+#label-for-limit
+{
+    margin-left: 30px;
 }
 
 
@@ -49,52 +241,105 @@ body
     padding-bottom: 25px;
     padding-left: 30px;
     padding-right: 30px;
+    margin-right: 15px;
 }
 
 
-#postcontent /*textarea*/
+#error-container
 {
-    padding-bottom: 2px;
+    clear: both;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 15px;
+    margin: 0 auto;
+}
+
+
+.error-message
+{
+    color: #D63333;
+    font-size: 16px;
+    background: rgba(0,0,0,.30);
+}
+
+
+/* KEEP */
+.transparent-textarea
+{
+    padding: 6px;
     font-family: sans-serif;
+    font-size: 14px;
+    color: gray;
     width: 100%;
     max-width: 100%;
-    border: 0px solid #B0B0B0;
-    border-bottom: 1px solid gray;
-    background-color: transparent;
+    border: 0px solid gray;
+    border-bottom-width: 1px;
+    background: rgba(0,0,0,.60);
+}
+
+
+.white-textarea
+{
+    padding: 6px;
+    font-family: sans-serif;
+    font-size: 14px;
+    color: black;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid gray;
 }
 
 
 #tag-table
 {
     padding-top: 10px;
-    font-size: 12px;
+    font-size: 16px;
+    color: white;
     max-width: 100%;
 }
 
 
 #tag-list
 {
-    -webkit-column-width: 100px;
-    -moz-column-width: 100px;
-    column-width: 100px;
+    -webkit-column-width: 130px;
+    -moz-column-width: 130px;
+    column-width: 130px;
     padding-left: 15px;
 }
 
 
-.new-tags
+#new-tags-label
 {
     display: inline-block;
     font-style: italic;
-    font-size: 12px;
+    padding-left: 4px;
 }
 
 
+#new-tags-textbox
+{
+    margin-left: 4px;
+}
+
+
+/* KEEP */
 .transparent-textbox
 {
     border: 0px solid gray;
     border-bottom-width: 1px;
-    background-color: transparent;
-    font-size: 12px;
+    background: rgba(0,0,0,.60);
+    color: gray;
+    padding: 6px;
+    margin: 4px;
+}
+
+
+.white-textbox
+{
+    border: 1px solid gray;
+    background-color: white;
+    padding: 6px;
+    margin: 4px;
 }
 
 
@@ -106,9 +351,21 @@ body
 
 .selected
 {
-    font-weight: bold;
-    color: red;
+    font-style: italic;
+    color: #78C3EB;
+    /* KEEP */
+    /*color: #78C3EB;*/
+    /*color: #FFFF66;*/
+    /*color: orange;*/
+    /*color: lime;*/
+    /*color: #00CCFF;*/
+    background: rgba(0,0,0,.30);
     cursor: pointer;
+    /* KEEP */
+    /*border: 1px solid black;*/
+    /* KEEP (needed if adding 1px border)
+    padding-left: 3px;
+    padding-right: 3px;*/
 }
 
 
@@ -116,6 +373,9 @@ body
 {
     font-style: italic;
     cursor: pointer;
+    /* KEEP (needed if adding 1px border)
+    padding-left: 4px;
+    padding-right: 4px;*/
 }
 
 
@@ -124,6 +384,7 @@ body
     background-color: white;
     border-collapse: collapse;
     width: 100%;
+    margin: 0 auto;
 }
 
 
@@ -131,18 +392,18 @@ body
 {
     clear: both;
     overflow: hidden;
-    border-bottom: #eee solid 1px;
+    border-bottom: lightgray solid 1px;
     padding-left: 0px;
     padding-right: 0px;
     padding-top: 7px;
     padding-bottom: 20px;
-    width: 100%
+    width: 100%;
 }
 
 
 .post-date-time
 {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     padding-bottom: 0px;
     padding-top: 10px;
@@ -152,10 +413,11 @@ body
 
 .post-content
 {
-    font-size: 12px;
-    padding-left: 45px;
-    padding-right: 45px;
-    padding-bottom: 5px;
+    font-size: 14px;
+    margin-left: 45px;
+    margin-right: 45px;
+    margin-bottom: 5px;
+    padding: 15px;
     word-wrap: break-word;
 }
 
@@ -178,54 +440,30 @@ body
     display: inline-block;
     padding-right: 10px;
     background-color: none;
-    cursor: pointer;
     padding-top: 10px;
 }
 
 
-.tag-bottom-submit /* the actual submit button in each tag*/
+.tag-bottom-submit /* the actual submit button in each tag */
 {
-    height: 20px;
+    height: 25px;
     font-size: 12px;
-    background: lightgray;
-    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    background-color: black;
     border: none;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
     cursor: pointer;
 }
 
 
 .post-edit-delete
 {
-    font-size: 12px;
     padding-top: 5px;
     padding-bottom: 0px;
     padding-right: 15px;
     float: right;
-}
-
-
-.edit
-{
-    font-size: 12px;
-    text-decoration: underline;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-
-.edit-hovered
-{
-    font-size: 12px;
-    text-decoration: underline;
-    background: none;
-    border: none;
-    background-color: #86C9ED;
-    cursor: pointer;
 }
 
 
@@ -240,7 +478,7 @@ body
     float: right;
 }
 
-
+/* KEEP */
 .highlight
 {
     background-color: yellow;

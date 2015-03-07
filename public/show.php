@@ -7,7 +7,6 @@
 //variables
 $limit = 0;
 $tagName = "";
-//$postIDs = array();
 
 //if not editing then get "limit" from $_SESSION
 if (!sessionHas("edit")) {
@@ -110,14 +109,12 @@ if ($data) {
 				echo "</form>";
 			echo "</div>";	//close 'tag-bottom'
 		echo "</div>";	//close 'tag-bottom-menu'
-
-		
 		
 		if (sessionHas("loggedin")) {
-		echo "<div class='post-edit-delete'>";	
+		echo "<div class='post-edit-delete'>";
 				echo "<div id='edit'>";
 					echo "<form action='' method='post'>";
-					echo "<input type='submit' class='edit' name='edit_button' value='Edit'>";
+					echo "<input type='submit' class='button' name='edit_button' value='Edit'>";
 					
 					//provides hidden $postID value to pass to $_POST
 					echo "<input type='hidden' name='postid' value='$postID'>";
@@ -127,7 +124,7 @@ if ($data) {
 
 				echo "<div id='delete'>";
 					echo "<form action='' method='post'>";
-					echo "<input type='submit' class='edit' name='delete_button' value='Delete'>";
+					echo "<input type='submit' class='button' name='delete_button' value='Delete'>";
 
 					//provides hidden $postID value to pass to $_POST
 					echo "<input type='hidden' name='postid' value='$postID'>";
@@ -144,7 +141,7 @@ if ($data) {
 }
 else {
 	//if no results were returned...
-	echo "<br><div style='padding-left: 35px; padding-bottom: 15px; font-size: 14px;'>No data available.</div>";
+	echo "<br><div style='padding-left: 35px; padding-bottom: 15px; font-size: 16px;'>No data available.</div>";
 }
 echo "</div>";	//close 'post-table'
 

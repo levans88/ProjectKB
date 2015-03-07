@@ -236,11 +236,9 @@ if ($devMode === TRUE) {
 				if (sessionHas("loggedin")) {
 					require("edit.php");
 				}
-				else {
-					echo "</div>";	//close 'header'
-				}
 
 				require("filter.php");
+				echo "</div>";	//close 'header'
 				require("write.php");
 				require("show.php");
 		?>
@@ -248,8 +246,6 @@ if ($devMode === TRUE) {
 	</div>	<!-- close 'container' -->
 	<script>
 		addTagMenuHandlers();
-		//addRowHandlers();
-		addNavMenuHandlers();
 	</script>
 	</body>
 </html>
