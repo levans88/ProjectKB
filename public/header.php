@@ -3,93 +3,58 @@
 //*************Setup the header layout, nav menu, and login form**************
 //****************************************************************************
 
-
 ?>
 
 
 <div class="container">
 			
-<div id='header'><!--gets closed in index.php-->
+<div id='header'><!--header gets closed in index.php-->
 
-<div id='left-side' style='float: left; padding-left: 25px; padding-top: 28px; padding-bottom: 0px;'>
-	
-	<div id='title-image' style='float: left; padding-top: 10px;'>
-		<img src="/img/BooksSmall.png">
-	</div>
-
-	<div id='title-text' style='float: right;'>
+<div id='left-side'>
 		
-		<div id='title-name' style='font-size: 26px; font-weight: bold; padding-left: 5px; padding-top: 5px;'>
-			ProjectKB
+		<div id='title-name'>
+			Project-KB
 		</div>
 
-		<div id='title-description' style='padding-left: 10px; padding-top: 2px; font-size: 12px; font-style: italic;'>
-			An active personal project for learning and archiving.<br>
-			Please see progress and issues on GitHub <a href='https://github.com/levans88/ProjectKB' target='_blank'>here</a>.
+		<div id='title-desc'>
+			An active personal project for learning and note taking.<br>
+			Please see progress and current issues on GitHub <a href='https://github.com/levans88/ProjectKB' target='_blank'>here</a>.
 		</div>
-
-	</div>
 	
 </div>
 
-<div id='right-side' style='clear: both; float: right; padding-right: 15px; padding-top: 15px; padding-right: 25px; padding-bottom: 0px; margin-bottom: 0px;'>
+<div id='right-side'>
 
-	<div id='nav-menu' style='float: left; padding-left: 10; padding-right: 15px; padding-top: 13px; font-weight: bold;'>
-		<br>
-			 <div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
-			 		<a style='color: inherit;' href='https://github.com/levans88' target='_blank'>GitHub</a>
-			 </div><!--
-		
-		--><div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
-					<a style='color: inherit;' href='http://blog.lennyevans.net/' target='_blank'>Blog</a>
-			 </div><!--
-		
-		--><div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
-			  	<a style='color: inherit;' href='https://www.youtube.com/user/lennyevans3' target='_blank'>YouTube</a>
-			 </div><!--
-		
-		--><div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
-			  	<a style='color: inherit;' href='http://www.linkedin.com/in/lennyevans/' target='_blank'>LinkedIn</a>
-			 </div><!--
-		
-		--><div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
-			  	<a style='color: inherit;' href='http://www.twitter.com/lennyevans88' target='_blank'>Twitter</a>
-			 </div><!--
-
-		--><!--<div class='edit' style='display: inline-block; padding: 5px; border-right: gray solid 1px;'>
-			  	<a style='color: inherit;' href='' target='_blank'>Resume</a>
-			 </div>--><!--
-
-		--><div class='edit' style='display: inline-block; padding: 5px;'>
-			  	<a style='color: inherit;' href='mailto:lenny.evans3@gmail.com'>Email</a>
-			 </div>
+	<div id='nav-menu'>
+		<a class='nav-menu-item' href='https://github.com/levans88' target='_blank'>GitHub</a>
+		<a class='nav-menu-item' href='http://blog.lennyevans.net/' target='_blank'>Blog</a>
+		<a class='nav-menu-item' href='https://www.youtube.com/user/lennyevans3' target='_blank'>YouTube</a>
+		<a class='nav-menu-item' href='http://www.linkedin.com/in/lennyevans/' target='_blank'>LinkedIn</a>
+		<a class='nav-menu-item' href='http://www.twitter.com/lennyevans88' target='_blank'>Twitter</a>
+		<a class='nav-menu-item' href='mailto:lenny.evans3@gmail.com'>Email</a>
 	</div>
 
-
-
-	<div style="float: left; padding-right: 10px">
-		<br>
-			<img src="/img/LennySquareSmall.png" style="border-radius: 50%;">
-		<br>
+	<div id='logo-container'>
+			<img id='logo-image' src="/img/LennySquareSmall.png">
 	</div>
 
 <?php
 
 if (!sessionHas("loggedin")) {		
-	echo "<div id='login-menu' style='float: left; margin-top: 3px; padding-bottom: 0px;'>";
+	echo "<div id='login-menu'>";
 		echo "<br>";
 		echo "<form class='login' action='' method='post'>";
-			echo "<input type='text' name='username' class='transparent-textbox' placeholder='Username' size='10'><br>";
-			echo "<input type='password' name='password' class='transparent-textbox' placeholder='Password' size='10'><br>";
-			echo "<div style='text-align: center;'><input type='submit' class='edit' name='login' value='Login'/></div>";
+			echo "<input type='text' name='username' class='white-textbox' placeholder='Username' size='11'><br>";
+			echo "<input type='password' name='password' class='white-textbox' placeholder='Password' size='11'><br>";
+			echo "<div style='text-align: center;'><input type='submit' id='login-button' name='login' class='button' value='Login'/></div>";
 		echo "</form>";
 	echo "</div>";
 	}
 	else {
 		echo "<br>";
-		echo "<div style='text-align: right; padding-right: 16px;'>"; 
+		echo "<div id='logout-menu'>"; 
 			echo "<form class='logout' action='' method='post'>";
-				echo "<input type='submit' class='edit' value='Logout'/>";
+				echo "<input type='submit' class='button' value='Logout'/>";
 				echo "<input type='hidden' name='logout' value='TRUE'>";
 			echo "</form>";
 		echo "</div>";
@@ -97,8 +62,14 @@ if (!sessionHas("loggedin")) {
 
 	echo "</div>";	//close right-side
 
-	echo "<div id='error' style='clear: both; width: 100%; text-align: center; color: red; font-size: 14px; padding-bottom: 15px; margin: 0 auto;'>";
-		echo SessionHas("error_forward");
+	echo "<div id='error-container'>";
+		if (SessionHas("error_forward")) {
+			echo "<span class='error-message'>" . SessionHas("error_forward") . "</span>";
+		}
+		else {
+			echo "&nbsp";
+		}
 		giveSession("error_forward", FALSE);
 	echo "</div>";	//close error div
+
 ?>

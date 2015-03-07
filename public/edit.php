@@ -47,7 +47,7 @@ else {
 
 			echo "<form class='newpost' action='' method='post'>";
 
-			echo "<textarea id='postcontent' name='postcontent' placeholder='Paste or type content here...' rows='4' cols='100'>" . $postContent . "</textarea>";
+			echo "<textarea id='postcontent' name='postcontent' class='white-textarea' placeholder='Paste or type content here...' rows='4' cols='100'>" . $postContent . "</textarea>";
 		  
 		  echo "<div id='tag-table'>";
 			echo "<ul id='tag-list'>";
@@ -79,21 +79,21 @@ else {
 							echo "<div><input type='checkbox' class='tag-checkbox' name='tag_boxes[]' id='$tag' value='$tag' $checked>";
 							echo "<label class='$status' for='$tag'>" . $tag . "</label>" . "</div></li>";
 						}
-
 					}
 				}
 
 				echo "<div style='display: inline-block;'>";
-				echo "<div class='new-tags'>new:</div>&nbsp&nbsp<input type='text' class='transparent-textbox' placeholder='ex: tag1;tag2' name='newtags' size='10'>";
+				echo "<div id='new-tags-label'>new:</div><br>";
+					echo "<input type='text' id='new-tags-textbox' class='white-textbox' placeholder='ex: tag1;tag2' name='newtags' size='10'>";
 				echo "</div>";
 				echo "</ul>";
 			echo "</div>";
-		echo "<input type='submit' name='post' value='$buttonValue'/>";
+		echo "<input type='submit' name='post' class='button' value='$buttonValue'/>";
 
 		//if we're already editing...
 		if (sessionHas("edit")) {
-			echo "&nbsp&nbsp";
-			echo "<input type='submit' name='cancel' value='Cancel'>";
+			echo "&nbsp";
+			echo "<input type='submit' name='cancel' class='button' value='Cancel'>";
 			//echo "<input type='hidden' name='cancel' value='TRUE'>";
 
 			//resubmit "postid" so $_POST will still have it
@@ -117,7 +117,5 @@ else {
 
 
 	echo "</div>";	//close form-container
-	echo "</div>";	//close 'header'
-//echo "</header>";
 
 ?>
