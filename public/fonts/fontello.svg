@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2015 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="blogger" unicode="&#xe800;" d="m550 850l-300-1c-128-18-237-97-246-231-3-13-2-25-2-37-2-59-1-122-1-182 1-96-2-173 0-244 1-209 124-306 348-302 55 1 119 1 192-1 72 0 128-5 177 2 221 31 264 179 273 299l0 137c-6 140-108 178-194 181 9 35 12 82 3 146-10 124-98 221-250 233z m-251-187l245 0c135-18 129-164 0-185l-245 0c-135 18-129 164 0 185z m-56-404l450-2c136-17 136-183 5-203l-450 2c-139 17-137 182-5 203z" horiz-adv-x="991" />
+<glyph glyph-name="blogger-1" unicode="&#xe801;" d="m0-150l0 1000 1000 0 0-1000-1000 0z m188 377q0-195 218-191l235 0q160 23 173 189l0 88q-3 59-39 85t-84 28q10 35 2 94-5 61-47 101t-111 45l-191 0q-65-9-108-47t-48-99l0-293z m96-29q-16 29 0 58t56 35l285 0q41-5 58-35t1-58-55-35l-285 0q-43 5-60 35z m35 264q-14 27 1 53t55 32l156 0q41-4 56-30t-1-53-55-34l-156 0q-41 6-56 32z" horiz-adv-x="1000" />
+<glyph glyph-name="mail" unicode="&#xe802;" d="m0-29l324 342 176-100 176 100 324-342-1000 0z m0 114l0 414 254-147z m0 503l0 141 1000 0 0-141-500-285z m746-236l254 147 0-414z" horiz-adv-x="1000" />
+<glyph glyph-name="mail-1" unicode="&#xe803;" d="m467 366l-449 210 0 109 893 0 0-109z m0-123l444 210 0-437-893 0 0 438z" horiz-adv-x="928" />
+<glyph glyph-name="mail-2" unicode="&#xe804;" d="m929 11v428q-18-20-39-37-149-114-238-188-28-24-46-38t-48-27-57-13h-2q-26 0-57 13t-48 27-46 38q-88 74-238 188-21 17-39 37v-428q0-8 6-13t12-5h822q7 0 12 5t6 13z m0 586v14t-1 7-1 7-3 5-5 4-8 2h-822q-7 0-12-6t-6-12q0-94 82-159 108-85 224-177 4-2 20-16t25-21 25-18 28-15 24-5h2q11 0 24 5t28 15 25 18 25 21 20 16q116 92 224 177 30 24 56 65t26 73z m71 21v-607q0-37-26-63t-63-27h-822q-36 0-63 27t-26 63v607q0 37 26 63t63 26h822q37 0 63-26t26-63z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>

@@ -221,7 +221,11 @@ if ($devMode === TRUE) {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
+		<!--<link href='http://fonts.googleapis.com/css?family=Droid+Sans|Cabin|Armata|PT+Sans+Narrow|Arimo|Quicksand|Josefin+Sans|Gloria+Hallelujah|Roboto+Slab|Nunito|Bree+Serif|Architects+Daughter|Amatic+SC|Chewy|Covered+By+Your+Grace|Cinzel|Rock+Salt' rel='stylesheet' type='text/css'>-->
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans|Just+Another+Hand|Sue+Ellen+Francisco|Give+You+Glory|Neucha|Shadows+Into+Light|Gloria+Hallelujah|Just+Me+Again+Down+Here|Indie+Flower|Yanone+Kaffeesatz|Nothing+You+Could+Do|Rancho|Englebert|Covered+By+Your+Grace' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/styles.css" />
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="css/fontello.css" />
 		<script type="text/javascript" src="js/scripts.js"></script>
 		<title>Lenny Evans</title>
 
