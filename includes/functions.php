@@ -631,10 +631,14 @@
             "value0" => $username
         );
 
+        $hash = "";
         $hashAsSalt = query($arguments);
-        $hashAsSalt = $hashAsSalt[0][0];
-        $hash = crypt($password, $hashAsSalt);
 
+        if ($hashAsSalt) {
+            $hashAsSalt = $hashAsSalt[0][0];
+            $hash = crypt($password, $hashAsSalt);
+        }
+        
         if ($hash === $hashAsSalt) {
             return TRUE;
         }

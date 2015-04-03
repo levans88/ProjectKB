@@ -45,7 +45,7 @@ else {
 							
 			echo "<div id='form-container'>";
 
-			echo "<form class='newpost' action='' method='post'>";
+			echo "<form id='newpost' action='' method='post'>";
 
 			echo "<textarea id='postcontent' name='postcontent' class='white-textarea' placeholder='Paste or type content here...' rows='4' cols='100'>" . $postContent . "</textarea>";
 		  
