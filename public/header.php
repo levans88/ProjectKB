@@ -11,6 +11,45 @@
 		
 <div id='header'><!--header gets closed in index.php-->
 
+ <div id='about'>
+	 	<div id='no-scroll'>
+	 		&nbsp;
+	 	</div>
+
+	 	<div id='about-content'>
+
+	 			<div id='about-title'>
+	 				About This Website
+	 			</div>
+
+	 			<br>
+			 	Project-KB is an active personal project for learning and documenting my projects and experiences.&nbsp
+			 	<br><br>
+			 	This site currently works best in Chrome or Internet Explorer 11. Please see progress, features, and current issues (including browser compatibility) on GitHub <a href='https://github.com/levans88' target='_blank'>here</a>.
+			 	<br><br>
+				Licensing and attribution info is listed below.
+				<br><br>
+				<div id='attribution-text'>
+					<b>Favicon</b><br>
+					<a href='http://www.iconsdb.com/black-icons/database-icon.html' target='_blank'>Icons DB</a>
+					<br><br>
+					<b>Fonts</b><br>
+					<a href='https://www.google.com/fonts' target='_blank'>Google Fonts</a>
+					<br><br>
+					<b>Icons</b><br>
+					<a href='http://fortawesome.github.io/Font-Awesome/' target='_blank'>Font Awesome</a>, <a href='http://fontello.com/' target='_blank'>Fontello</a> (<a href='http://www.lennyevans.net/fonts/license.txt' target='_blank'>License.txt</a>)
+					<br><br>
+					<b>Images</b><br>
+					<a href='http://www.freepik.com/free-vector/robotic-arms-collection_773281.htm' target='_blank'>Freepik</a> (<a href='http://www.lennyevans.net/img/license.txt' target='_blank'>License.txt</a>)
+	 				<br><br>
+ 				</div>
+ 				
+ 				<div id='ok-button-container'>
+ 					<input type='submit' id='ok-button' name='ok-button' value='ok' class='button' onclick="location.href='http://kb.lennyevans.net'">
+ 				</div>
+ 		</div>
+ </div>
+
  <div id='nav-log-container'>
 	<div id='nav-menu' class='menu'>
 
@@ -56,7 +95,7 @@
 			<span class='nav-menu-text'>Email</span>
 		</a>
 
-		<a id='nav-menu-item-last' class='nav-menu-item' href='' target='_blank'>
+		<a id='nav-menu-item-last' class='nav-menu-item' href='#about'>
 			<span class='nav-menu-icon'>
 				<span class='fa fa-info-circle'></span>
 			</span>
@@ -90,10 +129,10 @@
 
 				echo "<img id ='robot-roller' src='/img/RobotRoller2.png'>";
 
-				echo "<div id='title-desc'>";
-					echo "An active personal project for learning and note taking.<br>";
-						echo "Please see progress and current issues on GitHub <a href='https://github.com/levans88/ProjectKB' target='_blank'>here</a>.";
-				echo "</div>";
+				//echo "<div id='title-desc'>";
+					//echo "An active personal project for learning and note taking.<br>";
+						//echo "Please see progress and current issues on GitHub <a href='https://github.com/levans88/ProjectKB' target='_blank'>here</a>.";
+				//echo "</div>";
 			echo "</div>";
 
 			echo "<img id='robot-arm' src='/img/RobotArm2.png'>";
