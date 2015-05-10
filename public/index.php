@@ -227,7 +227,8 @@ if ($devMode === TRUE) {
 		<link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
 		<link rel="stylesheet" type="text/css" href="css/fontello.css" />
 		<script type="text/javascript" src="js/scripts.js"></script>
-		<title>Lenny Evans</title>
+		<title>Lenny Evans - Project-KB</title>
+		<link rel="shortcut icon" href="img/database-16.ico">
 
 	</head>
 
