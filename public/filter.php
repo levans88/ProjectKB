@@ -33,7 +33,7 @@
 
 ?>
 
-<div id='filter'>
+<div id='filter' class='menu'>
 	<div id='filtera'>	
 			<form id='search-form' action='' method='post'>
 
