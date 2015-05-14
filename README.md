@@ -67,4 +67,3 @@ Current Features
 **Responsive Design** (currently in progress)  
 -The page border shrinks when the browser window shrinks horizontally.  
 -I am working with FontAwesome and Fontello currently to replace the navigation menu text with icon fonts when the browser window is even smaller (not live yet).  
- 
