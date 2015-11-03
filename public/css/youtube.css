@@ -1,0 +1,40 @@
+body {
+    /*
+    font-family: sans-serif;
+    background-attachment: fixed;
+    */
+    background-color: white;
+    /*background-image: url("/img/GraphPaper.png");*/
+    /*
+    background-repeat: repeat;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;*/
+    padding: 15px;
+    /*margin: 0;*/
+    font-size: .875em;
+}
+
+.button {
+    width: 65px;
+    background-color: purple;
+}
+
+.button:hover
+{
+    background: rgba(168,0,168,1);
+    transition: all .25s;
+}
+
+#links_input {
+    display: inline-block;
+}
+
+#clear_form {
+    display: inline-block;
+}
+
+#clear_button {
+    margin-left: -350px;
+}
